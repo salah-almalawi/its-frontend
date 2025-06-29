@@ -20,10 +20,13 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
     "auth/register",
-    async ({ username, password }) => {
+    async ({ username, password }, { getState }) => {
+        const token = getState().auth.token;
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers["Authorization"] = `Bearer ${token}`;
         const res = await fetch("http://localhost:3000/api/auth/register", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers,
             body: JSON.stringify({ username, password }),
         });
         if (!res.ok) {
@@ -35,8 +38,7 @@ export const register = createAsyncThunk(
 );
 
 const initialState = {
-    token:
-        typeof window !== "undefined" ? localStorage.getItem(tokenKey) : null,
+    token: null,
     status: "idle",
     error: null,
 };
@@ -45,6 +47,12 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
+        setToken(state, action) {
+            state.token = action.payload;
+            if (typeof window !== "undefined" && action.payload) {
+                localStorage.setItem(tokenKey, action.payload);
+            }
+        },
         logout(state) {
             state.token = null;
             if (typeof window !== "undefined") {
@@ -77,6 +85,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setToken } = authSlice.actions;
 
 export default authSlice.reducer;

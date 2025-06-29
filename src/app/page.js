@@ -1,18 +1,9 @@
 "use client";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import useAuth from "../hooks/useAuth";
 
 export default function Home() {
-  const token = useSelector((state) => state.auth.token);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!token) {
-      router.push("/login");
-    }
-  }, [token, router]);
+  const token = useAuth();
 
   if (!token) return null;
   return (

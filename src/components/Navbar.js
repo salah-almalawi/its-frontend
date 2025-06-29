@@ -1,13 +1,16 @@
 "use client";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
+import useAuth from "../hooks/useAuth";
+import useHasMounted from "../hooks/useHasMounted";
 
 export default function Navbar() {
-    const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
+    const token = useAuth(false);
+    const mounted = useHasMounted();
 
-    if (!token) return null;
+    if (!mounted) return null;
 
     return (
         <nav>
@@ -15,12 +18,20 @@ export default function Navbar() {
                 <li>
                     <Link href="/">Home</Link>
                 </li>
-                <li>
-                    <Link href="/register">Create User</Link>
-                </li>
-                <li>
-                    <button onClick={() => dispatch(logout())}>Logout</button>
-                </li>
+                {token ? (
+                    <>
+                        <li>
+                            <Link href="/register">Create User</Link>
+                        </li>
+                        <li>
+                            <button onClick={() => dispatch(logout())}>Logout</button>
+                        </li>
+                    </>
+                ) : (
+                    <li>
+                        <Link href="/login">Login</Link>
+                    </li>
+                )}
             </ul>
         </nav>
     );

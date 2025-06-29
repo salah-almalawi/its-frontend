@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/auth/authSlice";
 import { useRouter } from "next/navigation";
@@ -10,16 +10,17 @@ export default function LoginPage() {
     const { token, status } = useSelector((state) => state.auth);
     const [form, setForm] = useState({ username: "", password: "" });
 
+    useEffect(() => {
+        if (token) {
+            router.push("/");
+        }
+    }, [token]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         await dispatch(login(form));
-        router.push("/");
+        // لا داعي لـ router.push هنا، لأنه موجود في useEffect
     };
-
-    if (token) {
-        router.push("/");
-        return null;
-    }
 
     return (
         <form onSubmit={handleSubmit}>
