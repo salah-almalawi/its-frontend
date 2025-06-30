@@ -24,6 +24,9 @@ export default function Navbar() {
                             <Link href="/register">Create User</Link>
                         </li>
                         <li>
+                            <Link href="/managers">managers</Link>
+                        </li>
+                        <li>
                             <button onClick={() => dispatch(logout())}>Logout</button>
                         </li>
                     </>
