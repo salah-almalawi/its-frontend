@@ -77,6 +77,20 @@ const managersSlice = createSlice({
             .addCase(fetchManagers.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
+            })
+            .addCase(createManager.fulfilled, (state, action) => {
+                state.items.push(action.payload);
+            })
+            .addCase(updateManager.fulfilled, (state, action) => {
+                const index = state.items.findIndex(
+                    (item) => item._id === action.payload._id
+                );
+                if (index !== -1) {
+                    state.items[index] = action.payload;
+                }
+            })
+            .addCase(deleteManager.fulfilled, (state, action) => {
+                state.items = state.items.filter((item) => item._id !== action.payload);
             });
     },
 });

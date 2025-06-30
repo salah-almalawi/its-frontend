@@ -14,7 +14,7 @@ export default function LoginPage() {
         if (token) {
             router.push("/");
         }
-    }, [token]);
+    }, [token, router]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

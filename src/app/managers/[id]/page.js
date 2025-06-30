@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { use, useEffect, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { updateManager, deleteManager } from "../../../features/managers/managersSlice";
@@ -8,25 +8,28 @@ import axios from "axios";
 import useAuth from "../../../hooks/useAuth";
 
 export default function ManagerDetails({ params }) {
-    const { id } = params;
+    const { id } = use(params);
     const dispatch = useDispatch();
     const router = useRouter();
     const token = useAuth();
     const [manager, setManager] = useState(null);
     const [form, setForm] = useState({ name: "", rank: "", department: "" });
 
+    const fetchManager = useCallback(async () => {
+        const res = await axios.get(`http://localhost:3000/api/managers/${id}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        setManager(res.data);
+        setForm({
+            name: res.data.name,
+            rank: res.data.rank,
+            department: res.data.department,
+        });
+    }, [id, token]);
+
     useEffect(() => {
-        const fetchManager = async () => {
-            const res = await axios.get(`http://localhost:3000/api/managers/${id}`);
-            setManager(res.data);
-            setForm({
-                name: res.data.name,
-                rank: res.data.rank,
-                department: res.data.department,
-            });
-        };
         fetchManager();
-    }, [id]);
+    }, [fetchManager]);
 
     if (!token) return null;
 
@@ -34,6 +37,7 @@ export default function ManagerDetails({ params }) {
         e.preventDefault();
         const data = { ...form, rank: Number(form.rank) };
         await dispatch(updateManager({ id, data }));
+        await fetchManager();
     };
 
     const handleDelete = async () => {
@@ -62,7 +66,7 @@ export default function ManagerDetails({ params }) {
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
                 <input
-                    type="number"
+                    type="text"
                     value={form.rank}
                     onChange={(e) => setForm({ ...form, rank: e.target.value })}
                 />
@@ -72,8 +76,8 @@ export default function ManagerDetails({ params }) {
                     onChange={(e) => setForm({ ...form, department: e.target.value })}
                 />
                 <button type="submit">Update</button>
+                <button type="button" onClick={handleDelete}>Delete</button>
             </form>
-            <button onClick={handleDelete}>Delete</button>
         </>
     );
 }

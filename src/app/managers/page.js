@@ -24,13 +24,13 @@ export default function ManagersPage() {
 
     if (!token) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const data = { ...form, rank: Number(form.rank) };
         if (editingId) {
-            dispatch(updateManager({ id: editingId, data }));
+            await dispatch(updateManager({ id: editingId, data }));
         } else {
-            dispatch(createManager(data));
+            await dispatch(createManager(data));
         }
         setForm({ name: "", rank: "", department: "" });
         setEditingId(null);
@@ -107,7 +107,9 @@ export default function ManagersPage() {
                                     Edit
                                 </button>
                                 <button
-                                    onClick={() => dispatch(deleteManager(manager._id))}
+                                    onClick={async () => {
+                                        await dispatch(deleteManager(manager._id));
+                                    }}
                                 >
                                     Delete
                                 </button>
