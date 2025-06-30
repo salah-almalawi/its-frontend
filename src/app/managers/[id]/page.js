@@ -183,14 +183,14 @@ export default function ManagerDetails({ params }) {
                   onClick={() => setEditing(true)}
                   className={`${styles.button} ${styles.editButton}`}
                 >
-                  ✏️ تعديل
+                  تعديل
                 </button>
                 <button
                   type="button"
                   onClick={handleDelete}
                   className={`${styles.button} ${styles.deleteButton}`}
                 >
-                  🗑️ حذف
+                  حذف
                 </button>
               </>
             )}
@@ -201,7 +201,7 @@ export default function ManagerDetails({ params }) {
           <div className={styles.roundsSection}>
             <h2 className={styles.roundsTitle}>الجولات الأخيرة</h2>
             {Array.isArray(manager.lastRounds) &&
-            manager.lastRounds.length > 0 ? (
+              manager.lastRounds.length > 0 ? (
               <table className={styles.roundsTable}>
                 <thead className={styles.roundsTableHeader}>
                   <tr>

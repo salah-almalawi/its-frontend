@@ -36,7 +36,6 @@ export default function Home() {
 
         <section className={styles.features}>
           <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>👥</div>
             <h3 className={styles.featureTitle}>إدارة المديرين</h3>
             <p className={styles.featureDescription}>
               قم بإدارة أعضاء فريقك بكفاءة، وتابع معلوماتهم، وراقب نشاطهم لحظة
@@ -45,7 +44,6 @@ export default function Home() {
           </div>
 
           <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>🔄</div>
             <h3 className={styles.featureTitle}>متابعة الجولات</h3>
             <p className={styles.featureDescription}>
               احتفظ بسجلات مفصلة لكل الجولات بما في ذلك المواقع والتوقيت
@@ -54,7 +52,6 @@ export default function Home() {
           </div>
 
           <div className={styles.featureCard}>
-            <div className={styles.featureIcon}>📊</div>
             <h3 className={styles.featureTitle}>تقارير شاملة</h3>
             <p className={styles.featureDescription}>
               أنشئ تقارير مفصلة وإحصائيات للحصول على رؤى حول العمليات واتخاذ
