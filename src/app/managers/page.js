@@ -2,12 +2,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import {
-    fetchManagers,
-    createManager,
-    updateManager,
-    deleteManager,
-} from "../../features/managers/managersSlice";
+import { fetchManagers, createManager } from "../../features/managers/managersSlice";
 import Navbar from "../../components/Navbar";
 import useAuth from "../../hooks/useAuth";
 
@@ -16,7 +11,6 @@ export default function ManagersPage() {
     const token = useAuth();
     const { items, status } = useSelector((state) => state.managers);
     const [form, setForm] = useState({ name: "", rank: "", department: "" });
-    const [editingId, setEditingId] = useState(null);
 
     useEffect(() => {
         dispatch(fetchManagers());
@@ -27,22 +21,8 @@ export default function ManagersPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = { ...form, rank: Number(form.rank) };
-        if (editingId) {
-            await dispatch(updateManager({ id: editingId, data }));
-        } else {
-            await dispatch(createManager(data));
-        }
+        await dispatch(createManager(data));
         setForm({ name: "", rank: "", department: "" });
-        setEditingId(null);
-    };
-
-    const handleEdit = (manager) => {
-        setEditingId(manager._id);
-        setForm({
-            name: manager.name,
-            rank: manager.rank.toString(),
-            department: manager.department,
-        });
     };
 
     return (
@@ -69,20 +49,7 @@ export default function ManagersPage() {
                         setForm({ ...form, department: e.target.value })
                     }
                 />
-                <button type="submit">
-                    {editingId ? "Update" : "Create"}
-                </button>
-                {editingId && (
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setEditingId(null);
-                            setForm({ name: "", rank: "", department: "" });
-                        }}
-                    >
-                        Cancel
-                    </button>
-                )}
+                <button type="submit">Create</button>
             </form>
             {status === "loading" && <p>Loading...</p>}
             <table>
@@ -91,7 +58,6 @@ export default function ManagersPage() {
                         <th>Name</th>
                         <th>Department</th>
                         <th>Rank</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,18 +68,6 @@ export default function ManagersPage() {
                             </td>
                             <td>{manager.department}</td>
                             <td>{manager.rank}</td>
-                            <td>
-                                <button onClick={() => handleEdit(manager)}>
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={async () => {
-                                        await dispatch(deleteManager(manager._id));
-                                    }}
-                                >
-                                    Delete
-                                </button>
-                            </td>
                         </tr>
                     ))}
                 </tbody>

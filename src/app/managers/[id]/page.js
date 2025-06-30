@@ -4,7 +4,8 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { updateManager, deleteManager } from "../../../features/managers/managersSlice";
 import Navbar from "../../../components/Navbar";
-import axios from "axios";
+import Link from "next/link";
+import api from "../../../api/api";
 import useAuth from "../../../hooks/useAuth";
 
 export default function ManagerDetails({ params }) {
@@ -16,7 +17,7 @@ export default function ManagerDetails({ params }) {
     const [form, setForm] = useState({ name: "", rank: "", department: "" });
 
     const fetchManager = useCallback(async () => {
-        const res = await axios.get(`http://localhost:3000/api/managers/${id}`, {
+        const res = await api.get(`/managers/${id}`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         setManager(res.data);
@@ -56,9 +57,10 @@ export default function ManagerDetails({ params }) {
         <>
             <Navbar />
             <h1>Manager Details</h1>
-            <p>ID: {manager._id}</p>
-            <p>Created At: {manager.createdAt}</p>
-            <p>Updated At: {manager.updatedAt}</p>
+            <p>Name: {manager.name}</p>
+            <p>Rank: {manager.rank}</p>
+            <p>Department: {manager.department}</p>
+            {manager.lastRounds && <p>Last Rounds: {manager.lastRounds}</p>}
             <form onSubmit={handleUpdate}>
                 <input
                     type="text"
@@ -78,6 +80,9 @@ export default function ManagerDetails({ params }) {
                 <button type="submit">Update</button>
                 <button type="button" onClick={handleDelete}>Delete</button>
             </form>
+            <Link href="/managers">Back to list</Link>
         </>
     );
 }
+
+
