@@ -61,6 +61,7 @@ export default function LoginPage() {
                         className={styles.submitButton}
                     >
                         {status === "loading" && <span className={styles.loadingSpinner}></span>}
+                        }
                         {status === "loading" ? "Signing In..." : "Sign In"}
                     </button>
                     
