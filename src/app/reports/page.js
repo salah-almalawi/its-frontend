@@ -29,7 +29,7 @@ export default function ReportsPage() {
         if (!token || !selectedId) return;
         async function loadReport() {
             try {
-                const res = await api.post(`/managers/${selectedId}/summary`, null, {
+                const res = await api.get(`/managers/${selectedId}/summary`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setReport(res.data);
