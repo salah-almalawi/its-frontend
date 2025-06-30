@@ -90,6 +90,37 @@ export default function ReportsPage() {
                                     ))}
                                 </tbody>
                             </table>
+                            <h3>اخر جولات جميع المدراء</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>المدير</th>
+                                        <th>المكان</th>
+                                        <th>اليوم</th>
+                                        <th>السنة</th>
+                                        <th>الشهر</th>
+                                        <th>اليوم</th>
+                                        <th>الوقت</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {managers.map((m) => {
+                                        const last = m.lastRounds?.[0];
+                                        if (!last) return null;
+                                        return (
+                                            <tr key={m._id}>
+                                                <td>{m.name}</td>
+                                                <td>{last.location}</td>
+                                                <td>{last.day}</td>
+                                                <td>{last.Hijri?.year}</td>
+                                                <td>{last.Hijri?.month}</td>
+                                                <td>{last.Hijri?.day}</td>
+                                                <td>{last.Hijri?.time}</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
                         </div>
                         <button className="print-hidden" onClick={() => window.print()}>
                             طباعة

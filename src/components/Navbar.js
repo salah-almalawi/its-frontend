@@ -5,7 +5,7 @@ import { logout } from "../features/auth/authSlice";
 import useAuth from "../hooks/useAuth";
 import useHasMounted from "../hooks/useHasMounted";
 
-export default function Navbar() {
+export default function Navbar({ className = "" }) {
     const dispatch = useDispatch();
     const token = useAuth(false);
     const mounted = useHasMounted();
@@ -13,7 +13,7 @@ export default function Navbar() {
     if (!mounted) return null;
 
     return (
-        <nav>
+        <nav className={className}>
             <ul>
                 <li>
                     <Link href="/">Home</Link>
