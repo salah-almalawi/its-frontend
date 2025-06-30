@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../features/auth/authSlice";
+import { login } from "../../../features/auth/authSlice";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
