@@ -80,7 +80,22 @@ export default function ManagerDetails({ params }) {
       <p>Name: {manager.name}</p>
       <p>Rank: {manager.rank}</p>
       <p>Department: {manager.department}</p>
-      {manager.lastRounds && <p>Last Rounds: {manager.lastRounds}</p>}
+      {manager.lastRounds && (
+        <div>
+          <p>Last Rounds:</p>
+          {Array.isArray(manager.lastRounds) ? (
+            <ul>
+              {manager.lastRounds.map((round) => (
+                <li key={round._id || round.id}>
+                  {round.location} - {round.day}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <pre>{JSON.stringify(manager.lastRounds, null, 2)}</pre>
+          )}
+        </div>
+      )}
 
       <form onSubmit={handleUpdate}>
         <input
