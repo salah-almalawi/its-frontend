@@ -30,6 +30,9 @@ export default function Navbar() {
                             <Link href="/rounds">rounds</Link>
                         </li>
                         <li>
+                            <Link href="/reports">reports</Link>
+                        </li>
+                        <li>
                             <button onClick={() => dispatch(logout())}>Logout</button>
                         </li>
                     </>
