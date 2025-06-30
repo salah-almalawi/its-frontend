@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
 import {
     fetchManagers,
     createManager,
@@ -28,18 +29,18 @@ export default function ManagersPage() {
         const data = { ...form, rank: Number(form.rank) };
         if (editingId) {
             dispatch(updateManager({ id: editingId, data }));
-            setEditingId(null);
         } else {
             dispatch(createManager(data));
         }
         setForm({ name: "", rank: "", department: "" });
+        setEditingId(null);
     };
 
     const handleEdit = (manager) => {
         setEditingId(manager._id);
         setForm({
             name: manager.name,
-            rank: manager.rank,
+            rank: manager.rank.toString(),
             department: manager.department,
         });
     };
@@ -47,7 +48,6 @@ export default function ManagersPage() {
     return (
         <>
             <Navbar />
-            <h1>Managers</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -56,7 +56,7 @@ export default function ManagersPage() {
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
                 <input
-                    type="number"
+                    type="text"
                     placeholder="rank"
                     value={form.rank}
                     onChange={(e) => setForm({ ...form, rank: e.target.value })}
@@ -85,19 +85,37 @@ export default function ManagersPage() {
                 )}
             </form>
             {status === "loading" && <p>Loading...</p>}
-            <ul>
-                {items.map((manager) => (
-                    <li key={manager._id}>
-                        {manager.name} - {manager.department} - rank {manager.rank}
-                        <button onClick={() => handleEdit(manager)}>Edit</button>
-                        <button
-                            onClick={() => dispatch(deleteManager(manager._id))}
-                        >
-                            Delete
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Rank</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {items.map((manager) => (
+                        <tr key={manager._id}>
+                            <td>
+                                <Link href={`/managers/${manager._id}`}>{manager.name}</Link>
+                            </td>
+                            <td>{manager.department}</td>
+                            <td>{manager.rank}</td>
+                            <td>
+                                <button onClick={() => handleEdit(manager)}>
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => dispatch(deleteManager(manager._id))}
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </>
     );
 }

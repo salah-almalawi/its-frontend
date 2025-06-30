@@ -1,20 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const tokenKey = "authToken";
 
 export const login = createAsyncThunk(
     "auth/login",
     async ({ username, password }) => {
-        const res = await fetch("http://localhost:3000/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password }),
-        });
-        if (!res.ok) {
-            throw new Error("Login failed");
-        }
-        const data = await res.json();
-        return data.token;
+        const res = await axios.post(
+            "http://localhost:3000/api/auth/login",
+            { username, password }
+        );
+        return res.data.token;
     }
 );
 
@@ -22,18 +18,13 @@ export const register = createAsyncThunk(
     "auth/register",
     async ({ username, password }, { getState }) => {
         const token = getState().auth.token;
-        const headers = { "Content-Type": "application/json" };
-        if (token) headers["Authorization"] = `Bearer ${token}`;
-        const res = await fetch("http://localhost:3000/api/auth/register", {
-            method: "POST",
-            headers,
-            body: JSON.stringify({ username, password }),
-        });
-        if (!res.ok) {
-            throw new Error("Register failed");
-        }
-        const data = await res.json();
-        return data.token;
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await axios.post(
+            "http://localhost:3000/api/auth/register",
+            { username, password },
+            { headers }
+        );
+        return res.data.token;
     }
 );
 

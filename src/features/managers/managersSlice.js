@@ -1,55 +1,58 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const fetchManagers = createAsyncThunk(
     "managers/fetchManagers",
-    async () => {
-        const res = await fetch("http://localhost:3000/api/managers");
-        if (!res.ok) {
-            throw new Error("Failed to fetch managers");
-        }
-        return res.json();
+    async (_, { getState }) => {
+        const token = getState().auth.token;
+        const res = await axios.get("http://localhost:3000/api/managers", {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        return res.data;
     }
 );
 
 export const createManager = createAsyncThunk(
     "managers/createManager",
-    async (manager) => {
-        const res = await fetch("http://localhost:3000/api/managers", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(manager),
-        });
-        if (!res.ok) {
-            throw new Error("Failed to create manager");
-        }
-        return res.json();
+    async (manager, { getState }) => {
+        const token = getState().auth.token;
+        const res = await axios.post(
+            "http://localhost:3000/api/managers",
+            manager,
+            {
+                headers: token
+                    ? { Authorization: `Bearer ${token}` }
+                    : {},
+            }
+        );
+        return res.data;
     }
 );
 
 export const updateManager = createAsyncThunk(
     "managers/updateManager",
-    async ({ id, data }) => {
-        const res = await fetch(`http://localhost:3000/api/managers/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
-        if (!res.ok) {
-            throw new Error("Failed to update manager");
-        }
-        return res.json();
+    async ({ id, data }, { getState }) => {
+        const token = getState().auth.token;
+        const res = await axios.put(
+            `http://localhost:3000/api/managers/${id}`,
+            data,
+            {
+                headers: token
+                    ? { Authorization: `Bearer ${token}` }
+                    : {},
+            }
+        );
+        return res.data;
     }
 );
 
 export const deleteManager = createAsyncThunk(
     "managers/deleteManager",
-    async (id) => {
-        const res = await fetch(`http://localhost:3000/api/managers/${id}`, {
-            method: "DELETE",
+    async (id, { getState }) => {
+        const token = getState().auth.token;
+        await axios.delete(`http://localhost:3000/api/managers/${id}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
-        if (!res.ok) {
-            throw new Error("Failed to delete manager");
-        }
         return id;
     }
 );
@@ -74,22 +77,6 @@ const managersSlice = createSlice({
             .addCase(fetchManagers.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
-            })
-            .addCase(createManager.fulfilled, (state, action) => {
-                state.items.push(action.payload);
-            })
-            .addCase(updateManager.fulfilled, (state, action) => {
-                const index = state.items.findIndex(
-                    (manager) => manager._id === action.payload._id
-                );
-                if (index !== -1) {
-                    state.items[index] = action.payload;
-                }
-            })
-            .addCase(deleteManager.fulfilled, (state, action) => {
-                state.items = state.items.filter(
-                    (manager) => manager._id !== action.payload
-                );
             });
     },
 });
