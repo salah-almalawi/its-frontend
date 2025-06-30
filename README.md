@@ -14,7 +14,8 @@ npm install
 npm run dev
 ```
 
-The application expects `NEXT_PUBLIC_API_BASE_URL` to be defined in your environment. It should point to the backend API root URL.
+Copy `.env.example` to `.env` and update the values before starting the app.
+The `NEXT_PUBLIC_API_BASE_URL` variable should point to the backend API root URL.
 
 ## Scripts
 
@@ -38,4 +39,4 @@ src/
   styles/     # Global and module CSS
 ```
 
-Additional configuration files include `next.config.mjs`, `eslint.config.mjs` and `jsconfig.json` in the project root.
+Additional configuration files include `next.config.mjs`, `eslint.config.mjs`, `jsconfig.json` and `.env.example` in the project root.
