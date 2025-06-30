@@ -1,0 +1,132 @@
+/* 
+  Color System - ITS Frontend
+  Base colors with variations for consistent theming
+*/
+
+:root {
+  /* Primary Colors */
+  --color-primary-red: #8C353D;
+  --color-primary-blue: #296CA6;
+  --color-primary-green: #048C34;
+  --color-primary-yellow: #F2D852;
+  --color-primary-orange: #F29F05;
+
+  /* Red Variations */
+  --color-red-50: rgba(140, 53, 61, 0.05);
+  --color-red-100: rgba(140, 53, 61, 0.1);
+  --color-red-200: rgba(140, 53, 61, 0.2);
+  --color-red-300: rgba(140, 53, 61, 0.3);
+  --color-red-500: #8C353D;
+  --color-red-600: #7A2E35;
+  --color-red-700: #68272D;
+  --color-red-800: #562025;
+  --color-red-900: #44191D;
+
+  /* Blue Variations */
+  --color-blue-50: rgba(41, 108, 166, 0.05);
+  --color-blue-100: rgba(41, 108, 166, 0.1);
+  --color-blue-200: rgba(41, 108, 166, 0.2);
+  --color-blue-300: rgba(41, 108, 166, 0.3);
+  --color-blue-500: #296CA6;
+  --color-blue-600: #245E94;
+  --color-blue-700: #1F5082;
+  --color-blue-800: #1A4270;
+  --color-blue-900: #15345E;
+
+  /* Green Variations */
+  --color-green-50: rgba(4, 140, 52, 0.05);
+  --color-green-100: rgba(4, 140, 52, 0.1);
+  --color-green-200: rgba(4, 140, 52, 0.2);
+  --color-green-300: rgba(4, 140, 52, 0.3);
+  --color-green-500: #048C34;
+  --color-green-600: #037A2E;
+  --color-green-700: #036828;
+  --color-green-800: #025622;
+  --color-green-900: #02441C;
+
+  /* Yellow Variations */
+  --color-yellow-50: rgba(242, 216, 82, 0.05);
+  --color-yellow-100: rgba(242, 216, 82, 0.1);
+  --color-yellow-200: rgba(242, 216, 82, 0.2);
+  --color-yellow-300: rgba(242, 216, 82, 0.3);
+  --color-yellow-500: #F2D852;
+  --color-yellow-600: #E6C947;
+  --color-yellow-700: #DABA3C;
+  --color-yellow-800: #CEAB31;
+  --color-yellow-900: #C29C26;
+
+  /* Orange Variations */
+  --color-orange-50: rgba(242, 159, 5, 0.05);
+  --color-orange-100: rgba(242, 159, 5, 0.1);
+  --color-orange-200: rgba(242, 159, 5, 0.2);
+  --color-orange-300: rgba(242, 159, 5, 0.3);
+  --color-orange-500: #F29F05;
+  --color-orange-600: #E68F04;
+  --color-orange-700: #DA7F04;
+  --color-orange-800: #CE6F03;
+  --color-orange-900: #C25F03;
+
+  /* Neutral Colors */
+  --color-white: #FFFFFF;
+  --color-gray-50: #F9FAFB;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1F2937;
+  --color-gray-900: #111827;
+  --color-black: #000000;
+
+  /* Semantic Colors */
+  --color-success: var(--color-green-500);
+  --color-warning: var(--color-orange-500);
+  --color-error: var(--color-red-500);
+  --color-info: var(--color-blue-500);
+
+  /* Spacing System (8px base) */
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem;  /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem;    /* 16px */
+  --spacing-5: 1.25rem; /* 20px */
+  --spacing-6: 1.5rem;  /* 24px */
+  --spacing-8: 2rem;    /* 32px */
+  --spacing-10: 2.5rem; /* 40px */
+  --spacing-12: 3rem;   /* 48px */
+  --spacing-16: 4rem;   /* 64px */
+  --spacing-20: 5rem;   /* 80px */
+
+  /* Typography */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Border Radius */
+  --radius-sm: 0.125rem;
+  --radius-base: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+}

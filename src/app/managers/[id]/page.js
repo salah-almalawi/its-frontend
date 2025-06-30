@@ -10,9 +10,10 @@ import Navbar from "../../../components/Navbar";
 import Link from "next/link";
 import api from "../../../api/api";
 import useAuth from "../../../hooks/useAuth";
+import styles from './page.module.css';
 
 export default function ManagerDetails({ params }) {
-  const { id } = use(params);           // unwrap Promise with React.use()
+  const { id } = use(params);
   const dispatch = useDispatch();
   const router = useRouter();
   const token = useAuth();
@@ -59,15 +60,19 @@ export default function ManagerDetails({ params }) {
   };
 
   const handleDelete = async () => {
-    await dispatch(deleteManager(id));
-    router.push("/managers");
+    if (window.confirm('Are you sure you want to delete this manager?')) {
+      await dispatch(deleteManager(id));
+      router.push("/managers");
+    }
   };
 
   if (!manager) {
     return (
       <>
         <Navbar />
-        <p>Loading...</p>
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner}></div>
+        </div>
       </>
     );
   }
@@ -75,99 +80,151 @@ export default function ManagerDetails({ params }) {
   return (
     <>
       <Navbar />
-
-      <h1>Manager Details</h1>
-      <p>Name: {manager.name}</p>
-      <p>Rank: {manager.rank}</p>
-      <p>Department: {manager.department}</p>
-      {manager.lastRounds && (
-        <div>
-          <p>Last Rounds:</p>
-          {Array.isArray(manager.lastRounds) ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Location</th>
-                  <th>Day</th>
-                  <th>Year</th>
-                  <th>Month</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {manager.lastRounds.map((round) => (
-                  <tr key={round._id || round.id}>
-                    <td>{round.location}</td>
-                    <td>{round.day}</td>
-                    <td>{round.Hijri?.year}</td>
-                    <td>{round.Hijri?.month}</td>
-                    <td>{round.Hijri?.day}</td>
-                    <td>{round.Hijri?.time}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <pre>{JSON.stringify(manager.lastRounds, null, 2)}</pre>
-          )}
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Manager Details</h1>
+          <Link href="/managers" className={styles.backLink}>
+            ← Back to Managers
+          </Link>
         </div>
-      )}
 
-      <form onSubmit={handleUpdate}>
-        <input
-          type="text"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          disabled={!editing}
-        />
-        <input
-          type="text"
-          value={form.rank}
-          onChange={(e) => setForm({ ...form, rank: e.target.value })}
-          disabled={!editing}
-        />
-        <input
-          type="text"
-          value={form.department}
-          onChange={(e) => setForm({ ...form, department: e.target.value })}
-          disabled={!editing}
-        />
+        <div className={styles.detailsCard}>
+          {!editing ? (
+            <div className={styles.detailsGrid}>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Name</span>
+                <span className={styles.detailValue}>{manager.name}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Rank</span>
+                <span className={styles.detailValue}>{manager.rank}</span>
+              </div>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Department</span>
+                <span className={styles.detailValue}>{manager.department}</span>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleUpdate} className={styles.form}>
+              <div className={styles.inputGroup}>
+                <label htmlFor="name" className={styles.label}>Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className={styles.input}
+                  required
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="rank" className={styles.label}>Rank</label>
+                <input
+                  id="rank"
+                  type="number"
+                  value={form.rank}
+                  onChange={(e) => setForm({ ...form, rank: e.target.value })}
+                  className={styles.input}
+                  required
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="department" className={styles.label}>Department</label>
+                <input
+                  id="department"
+                  type="text"
+                  value={form.department}
+                  onChange={(e) => setForm({ ...form, department: e.target.value })}
+                  className={styles.input}
+                  required
+                />
+              </div>
+            </form>
+          )}
 
-        {editing && (
-          <>
-            <button type="submit" disabled={!isChanged}>
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setEditing(false);
-                setForm({
-                  name: manager.name,
-                  rank: String(manager.rank),
-                  department: manager.department,
-                });
-              }}
-            >
-              Cancel
-            </button>
-          </>
+          <div className={styles.buttonGroup}>
+            {editing ? (
+              <>
+                <button 
+                  type="submit" 
+                  onClick={handleUpdate}
+                  disabled={!isChanged}
+                  className={`${styles.button} ${styles.saveButton}`}
+                >
+                  💾 Save Changes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditing(false);
+                    setForm({
+                      name: manager.name,
+                      rank: String(manager.rank),
+                      department: manager.department,
+                    });
+                  }}
+                  className={`${styles.button} ${styles.cancelButton}`}
+                >
+                  ✕ Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  type="button" 
+                  onClick={() => setEditing(true)}
+                  className={`${styles.button} ${styles.editButton}`}
+                >
+                  ✏️ Edit
+                </button>
+                <button 
+                  type="button" 
+                  onClick={handleDelete}
+                  className={`${styles.button} ${styles.deleteButton}`}
+                >
+                  🗑️ Delete
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {manager.lastRounds && (
+          <div className={styles.roundsSection}>
+            <h2 className={styles.roundsTitle}>Recent Rounds</h2>
+            {Array.isArray(manager.lastRounds) && manager.lastRounds.length > 0 ? (
+              <table className={styles.roundsTable}>
+                <thead className={styles.roundsTableHeader}>
+                  <tr>
+                    <th className={styles.roundsTableHeaderCell}>Location</th>
+                    <th className={styles.roundsTableHeaderCell}>Day</th>
+                    <th className={styles.roundsTableHeaderCell}>Year</th>
+                    <th className={styles.roundsTableHeaderCell}>Month</th>
+                    <th className={styles.roundsTableHeaderCell}>Date</th>
+                    <th className={styles.roundsTableHeaderCell}>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {manager.lastRounds.map((round) => (
+                    <tr key={round._id || round.id} className={styles.roundsTableRow}>
+                      <td className={styles.roundsTableCell}>{round.location}</td>
+                      <td className={styles.roundsTableCell}>{round.day}</td>
+                      <td className={styles.roundsTableCell}>{round.Hijri?.year}</td>
+                      <td className={styles.roundsTableCell}>{round.Hijri?.month}</td>
+                      <td className={styles.roundsTableCell}>{round.Hijri?.day}</td>
+                      <td className={styles.roundsTableCell}>{round.Hijri?.time}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className={styles.noRounds}>
+                No rounds recorded for this manager yet.
+              </div>
+            )}
+          </div>
         )}
-      </form>
-
-      {!editing && (
-        <>
-          <button type="button" onClick={() => setEditing(true)}>
-            Edit
-          </button>
-          <button type="button" onClick={handleDelete}>
-            Delete
-          </button>
-        </>
-      )}
-
-      <Link href="/managers">Back to list</Link>
+      </div>
     </>
   );
 }
