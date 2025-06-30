@@ -27,6 +27,9 @@ export default function Navbar() {
                             <Link href="/managers">managers</Link>
                         </li>
                         <li>
+                            <Link href="/rounds">rounds</Link>
+                        </li>
+                        <li>
                             <button onClick={() => dispatch(logout())}>Logout</button>
                         </li>
                     </>
