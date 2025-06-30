@@ -111,7 +111,7 @@ export default function ReportsPage() {
                             </div>
 
                             <h3 className={`${styles.sectionTitle} ${styles.rounds}`}>
-                                Manager's Recent Rounds
+                                   Manager&apos;s Recent Rounds
                             </h3>
                             <table className={styles.table}>
                                 <thead className={styles.tableHeader}>
