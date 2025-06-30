@@ -1,6 +1,6 @@
-"use client";
-import Navbar from "../components/Navbar";
-import useAuth from "../hooks/useAuth";
+'use client';
+import Navbar from '../components/Navbar';
+import useAuth from '../hooks/useAuth';
 import styles from './page.module.css';
 import Link from 'next/link';
 
@@ -8,24 +8,27 @@ export default function Home() {
   const token = useAuth();
 
   if (!token) return null;
-  
+
   return (
     <>
       <Navbar />
       <div className={styles.container}>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <h1 className={styles.title}>ITS Management System</h1>
+            <h1 className={styles.title}>نظام إدارة ITS</h1>
             <p className={styles.subtitle}>
-              Streamline your operations with our comprehensive management platform. 
-              Track managers, monitor rounds, and generate detailed reports with ease.
+              سهِّل عملياتك مع منصتنا الشاملة لإدارة النظام. تتبع المديرين، راقب
+              الجولات، واستخرج التقارير التفصيلية بسهولة.
             </p>
             <div className={styles.quickActions}>
               <Link href="/managers" className={styles.actionButton}>
-                Manage Team
+                إدارة الفريق
               </Link>
-              <Link href="/rounds" className={`${styles.actionButton} ${styles.secondary}`}>
-                View Rounds
+              <Link
+                href="/rounds"
+                className={`${styles.actionButton} ${styles.secondary}`}
+              >
+                عرض الجولات
               </Link>
             </div>
           </div>
@@ -34,25 +37,28 @@ export default function Home() {
         <section className={styles.features}>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>👥</div>
-            <h3 className={styles.featureTitle}>Manager Management</h3>
+            <h3 className={styles.featureTitle}>إدارة المديرين</h3>
             <p className={styles.featureDescription}>
-              Efficiently manage your team members, track their information, and monitor their activities in real-time.
+              قم بإدارة أعضاء فريقك بكفاءة، وتابع معلوماتهم، وراقب نشاطهم لحظة
+              بلحظة.
             </p>
           </div>
-          
+
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>🔄</div>
-            <h3 className={styles.featureTitle}>Round Tracking</h3>
+            <h3 className={styles.featureTitle}>متابعة الجولات</h3>
             <p className={styles.featureDescription}>
-              Keep detailed records of all rounds, including locations, timing, and manager assignments for complete oversight.
+              احتفظ بسجلات مفصلة لكل الجولات بما في ذلك المواقع والتوقيت
+              وتعيينات المديرين لمتابعة شاملة.
             </p>
           </div>
-          
+
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>📊</div>
-            <h3 className={styles.featureTitle}>Comprehensive Reports</h3>
+            <h3 className={styles.featureTitle}>تقارير شاملة</h3>
             <p className={styles.featureDescription}>
-              Generate detailed reports and analytics to gain insights into operations and make data-driven decisions.
+              أنشئ تقارير مفصلة وإحصائيات للحصول على رؤى حول العمليات واتخاذ
+              قرارات مبنية على البيانات.
             </p>
           </div>
         </section>
