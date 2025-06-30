@@ -84,13 +84,30 @@ export default function ManagerDetails({ params }) {
         <div>
           <p>Last Rounds:</p>
           {Array.isArray(manager.lastRounds) ? (
-            <ul>
-              {manager.lastRounds.map((round) => (
-                <li key={round._id || round.id}>
-                  {round.location} - {round.day}
-                </li>
-              ))}
-            </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>Location</th>
+                  <th>Day</th>
+                  <th>Year</th>
+                  <th>Month</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {manager.lastRounds.map((round) => (
+                  <tr key={round._id || round.id}>
+                    <td>{round.location}</td>
+                    <td>{round.day}</td>
+                    <td>{round.Hijri?.year}</td>
+                    <td>{round.Hijri?.month}</td>
+                    <td>{round.Hijri?.day}</td>
+                    <td>{round.Hijri?.time}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
             <pre>{JSON.stringify(manager.lastRounds, null, 2)}</pre>
           )}
