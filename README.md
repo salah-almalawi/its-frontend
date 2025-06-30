@@ -23,8 +23,15 @@ The `NEXT_PUBLIC_API_BASE_URL` variable should point to the backend API root URL
 - `npm run build` – create a production build
 - `npm run start` – run the production build
 - `npm run lint` – run ESLint
+- `npm run format` – format the codebase with Prettier
 
 There are currently no automated tests configured.
+
+## Formatting
+
+Code formatting is enforced with [Prettier](https://prettier.io/). The
+configuration uses two-space indentation, semicolons, and single quotes. Run
+`npm run format` to automatically format all files.
 
 ## Folder structure
 
