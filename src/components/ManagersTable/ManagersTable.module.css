@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900');
+
+.container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: white;
+  font-family: Inter, "Noto Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+.layoutContainer {
+  display: flex;
+  height: 100%;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.contentWrapper {
+  padding-left: 10rem;
+  padding-right: 10rem;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.layoutContentContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 960px;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.title {
+  color: #111418;
+  letter-spacing: -0.025em;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  min-width: 18rem;
+  margin: 0;
+}
+
+.addButton {
+  display: flex;
+  min-width: 84px;
+  max-width: 480px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  height: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #f0f2f5;
+  color: #111418;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: normal;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: #e1e5e9;
+}
+
+.buttonText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tableContainer {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  container-type: inline-size;
+}
+
+.tableWrapper {
+  display: flex;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #dbe0e6;
+  background-color: white;
+}
+
+.table {
+  flex: 1;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.headerRow {
+  background-color: white;
+}
+
+.headerCell {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: #111418;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: normal;
+  width: 400px;
+}
+
+.dataRow {
+  border-top: 1px solid #dbe0e6;
+}
+
+.dataCell {
+  height: 72px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: normal;
+  width: 400px;
+  vertical-align: middle;
+}
+
+.nameCell {
+  color: #111418;
+}
+
+.secondaryCell {
+  color: #60758a;
+}
+
+/* Responsive columns */
+.nameColumn {
+  min-width: 200px;
+}
+
+.rankColumn {
+  min-width: 150px;
+}
+
+.departmentColumn {
+  min-width: 150px;
+}
+
+/* Container queries for responsive behavior */
+@container (max-width: 120px) {
+  .nameColumn {
+    display: none;
+  }
+}
+
+@container (max-width: 240px) {
+  .rankColumn {
+    display: none;
+  }
+}
+
+@container (max-width: 360px) {
+  .departmentColumn {
+    display: none;
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .contentWrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .title {
+    min-width: auto;
+    font-size: 1.5rem;
+  }
+  
+  .addButton {
+    max-width: none;
+    width: 100%;
+  }
+  
+  .headerCell,
+  .dataCell {
+    width: auto;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tableWrapper {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 500px;
+  }
+}
