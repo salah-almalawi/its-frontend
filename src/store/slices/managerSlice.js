@@ -42,7 +42,7 @@ export const updateManager = createAsyncThunk(
     'managers/updateManager',
     async ({ id, data }, { rejectWithValue }) => {
         try {
-            const response = await api.put(`/managers/${id}`, data);
+            const response = await api.PATCH(`/managers/${id}`, data);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to update manager');
