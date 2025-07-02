@@ -42,11 +42,15 @@ api.interceptors.response.use(
 
             switch (status) {
                 case 401:
-                    // غير مصرح له
+                    // غير مصرح له - إعادة توجيه للتسجيل
                     console.error('Unauthorized access');
                     if (typeof window !== 'undefined') {
                         localStorage.removeItem('authToken');
-                        window.location.href = '/login';
+                        localStorage.removeItem('userInfo');
+                        // Only redirect if not already on login page
+                        if (window.location.pathname !== '/login') {
+                            window.location.href = '/login';
+                        }
                     }
                     break;
                 case 403:
@@ -81,5 +85,33 @@ api.interceptors.response.use(
         }
     }
 );
+
+// Helper function to check if user is authenticated
+export const isAuthenticated = () => {
+    if (typeof window === 'undefined') return false;
+    const token = localStorage.getItem('authToken');
+    const user = localStorage.getItem('userInfo');
+    return !!(token && user);
+};
+
+// Helper function to get current user
+export const getCurrentUser = () => {
+    if (typeof window === 'undefined') return null;
+    try {
+        const userInfo = localStorage.getItem('userInfo');
+        return userInfo ? JSON.parse(userInfo) : null;
+    } catch (error) {
+        console.error('Error parsing user info:', error);
+        return null;
+    }
+};
+
+// Helper function to clear authentication data
+export const clearAuthData = () => {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userInfo');
+    }
+};
 
 export default api;

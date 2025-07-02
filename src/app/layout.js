@@ -1,18 +1,25 @@
 import '../styles/globals.css';
-import ReduxProvider from '@/components/Providers/ReduxProvider';
+import { AuthProvider } from '@/components/Auth/AuthProvider';
+import AuthGuard from '@/components/Auth/AuthGuard';
+import Navbar from '@/components/Navbar/Navbar';
 
 export const metadata = {
   title: 'نظام إدارة ITS',
-  description: 'تم إنشاؤه بواسطة Create Next App',
+  description: 'نظام إدارة جولات التفتيش',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr">
       <body>
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+        <AuthProvider>
+          <AuthGuard>
+            <Navbar />
+            <main>
+              {children}
+            </main>
+          </AuthGuard>
+        </AuthProvider>
       </body>
     </html>
   );
