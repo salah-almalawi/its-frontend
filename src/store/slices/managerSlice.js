@@ -38,18 +38,19 @@ export const createManager = createAsyncThunk(
     }
 );
 
+// src/store/slices/managerSlice.js - تحديث دالة updateManager
 export const updateManager = createAsyncThunk(
     'managers/updateManager',
     async ({ id, data }, { rejectWithValue }) => {
         try {
-            const response = await api.PATCH(`/managers/${id}`, data);
+            // تغيير من PATCH إلى PUT
+            const response = await api.put(`/managers/${id}`, data);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to update manager');
         }
     }
 );
-
 export const deleteManager = createAsyncThunk(
     'managers/deleteManager',
     async (managerId, { rejectWithValue }) => {
