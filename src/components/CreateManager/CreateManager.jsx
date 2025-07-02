@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   createManager,
@@ -12,7 +14,9 @@ import {
 import styles from './CreateManager.module.css';
 
 const CreateManager = ({ onSuccess, onCancel }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   
   // Redux state
   const isSubmitting = useAppSelector(selectCreateLoading);
@@ -28,7 +32,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
 
   // خيارات الـ rank من 1 إلى 16
   const rankOptions = [
-    { value: '', label: 'Select rank' },
+    { value: '', label: t('Select rank') },
     ...Array.from({ length: 16 }, (_, i) => ({
       value: (i + 1).toString(),
       label: `Rank ${i + 1}`
@@ -46,15 +50,15 @@ const CreateManager = ({ onSuccess, onCancel }) => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('Name is required');
     }
 
     if (!formData.rank) {
-      newErrors.rank = 'Rank is required';
+      newErrors.rank = t('Rank is required');
     }
 
     if (!formData.department.trim()) {
-      newErrors.department = 'Department is required';
+      newErrors.department = t('Department is required');
     }
 
     setFormErrors(newErrors);
@@ -104,7 +108,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
       if (onSuccess) {
         onSuccess(result);
       } else {
-        window.location.href = '/managers';
+        router.push('/managers');
       }
     } catch (error) {
       // Error is handled by Redux state
@@ -125,7 +129,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
     if (onCancel) {
       onCancel();
     } else {
-      window.location.href = '/managers';
+      router.push('/managers');
     }
   };
 
@@ -137,15 +141,15 @@ const CreateManager = ({ onSuccess, onCancel }) => {
             {/* Breadcrumb */}
             <div className={styles.breadcrumb}>
               <Link href="/managers" className={styles.breadcrumbLink}>
-                Managers
+                {t("Managers")}
               </Link>
               <span className={styles.breadcrumbSeparator}>/</span>
-              <span className={styles.breadcrumbCurrent}>Create Manager</span>
+              <span className={styles.breadcrumbCurrent}>{t("Create Manager")}</span>
             </div>
 
             {/* Page Title */}
             <div className={styles.titleContainer}>
-              <p className={styles.title}>Create Manager</p>
+              <p className={styles.title}>{t("Create Manager")}</p>
             </div>
 
             {/* Global Error Message */}
@@ -162,13 +166,13 @@ const CreateManager = ({ onSuccess, onCancel }) => {
               {/* Name Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>Name</p>
+                  <p className={styles.labelText}>{t("Name")}</p>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Enter name"
+                    placeholder={t("Enter name")}
                     className={`${styles.textInput} ${formErrors.name ? styles.inputError : ''}`}
                     disabled={isSubmitting}
                   />
@@ -181,7 +185,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
               {/* Rank Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>Rank</p>
+                  <p className={styles.labelText}>{t("Rank")}</p>
                   <select
                     name="rank"
                     value={formData.rank}
@@ -204,13 +208,13 @@ const CreateManager = ({ onSuccess, onCancel }) => {
               {/* Department Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>Department</p>
+                  <p className={styles.labelText}>{t("Department")}</p>
                   <input
                     type="text"
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
-                    placeholder="Enter department"
+                    placeholder={t("Enter department")}
                     className={`${styles.textInput} ${formErrors.department ? styles.inputError : ''}`}
                     disabled={isSubmitting}
                   />
@@ -229,7 +233,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
                     className={styles.cancelButton}
                     disabled={isSubmitting}
                   >
-                    <span className={styles.buttonText}>Cancel</span>
+                    <span className={styles.buttonText}>{t("Cancel")}</span>
                   </button>
                   <button
                     type="submit"
@@ -237,7 +241,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
                     disabled={isSubmitting}
                   >
                     <span className={styles.buttonText}>
-                      {isSubmitting ? 'Creating...' : 'Create'}
+                      {isSubmitting ? t('Creating...') : t('Create')}
                     </span>
                   </button>
                 </div>

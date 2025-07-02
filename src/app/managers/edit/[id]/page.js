@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   fetchManagerDetails,
@@ -18,6 +18,7 @@ import EditManager from '@/components/EditManager/EditManager';
 
 export default function EditManagerPage() {
   const params = useParams();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   
   // Redux state
@@ -48,7 +49,7 @@ export default function EditManagerPage() {
       })).unwrap();
       
       // التوجه إلى صفحة التفاصيل
-      window.location.href = `/managers/${params.id}`;
+      router.push(`/managers/${params.id}`);
     } catch (error) {
       // Error is handled by Redux state
       console.error('Error updating manager:', error);
@@ -57,7 +58,7 @@ export default function EditManagerPage() {
 
   const handleCancel = () => {
     // العودة إلى صفحة التفاصيل
-    window.location.href = `/managers/${params.id}`;
+    router.push(`/managers/${params.id}`);
   };
 
   // Loading state for fetching manager details

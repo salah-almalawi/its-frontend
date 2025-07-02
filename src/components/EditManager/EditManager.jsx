@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { clearError } from '@/store/slices/managerSlice';
+import { useTranslation } from 'react-i18next';
 import styles from './EditManager.module.css';
 
 const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, error = null }) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState({
     name: manager?.name || '',
@@ -19,7 +21,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
 
   // خيارات الـ rank من 1 إلى 16
   const rankOptions = [
-    { value: '', label: 'Select Rank' },
+    { value: '', label: t('Select rank') },
     ...Array.from({ length: 16 }, (_, i) => ({
       value: (i + 1).toString(),
       label: `Rank ${i + 1}`
@@ -48,15 +50,15 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('Name is required');
     }
 
     if (!formData.rank) {
-      newErrors.rank = 'Rank is required';
+      newErrors.rank = t('Rank is required');
     }
 
     if (!formData.department.trim()) {
-      newErrors.department = 'Department is required';
+      newErrors.department = t('Department is required');
     }
 
     setFormErrors(newErrors);
@@ -112,15 +114,15 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
             {/* Breadcrumb */}
             <div className={styles.breadcrumb}>
               <Link href="/managers" className={styles.breadcrumbLink}>
-                Managers
+                {t("Managers")}
               </Link>
               <span className={styles.breadcrumbSeparator}>/</span>
-              <span className={styles.breadcrumbCurrent}>Edit Manager</span>
+              <span className={styles.breadcrumbCurrent}>{t("Edit Manager")}</span>
             </div>
 
             {/* Page Title */}
             <div className={styles.titleContainer}>
-              <p className={styles.title}>Edit Manager</p>
+              <p className={styles.title}>{t("Edit Manager")}</p>
             </div>
 
             {/* Global Error Message */}
@@ -137,14 +139,14 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
               {/* Name Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>Name</p>
+                  <p className={styles.labelText}>{t("Name")}</p>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     className={`${styles.textInput} ${formErrors.name ? styles.inputError : ''}`}
-                    placeholder="Enter manager name"
+                    placeholder={t("Enter manager name")}
                     disabled={isSubmitting}
                     required
                   />
@@ -157,7 +159,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
               {/* Rank Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>Rank</p>
+                  <p className={styles.labelText}>{t("Rank")}</p>
                   <select
                     name="rank"
                     value={formData.rank}
@@ -181,14 +183,14 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
               {/* Department Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>Department</p>
+                  <p className={styles.labelText}>{t("Department")}</p>
                   <input
                     type="text"
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
                     className={`${styles.textInput} ${formErrors.department ? styles.inputError : ''}`}
-                    placeholder="Enter department"
+                    placeholder={t("Enter department")}
                     disabled={isSubmitting}
                     required
                   />
@@ -207,7 +209,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
                     className={styles.cancelButton}
                     disabled={isSubmitting}
                   >
-                    <span className={styles.buttonText}>Cancel</span>
+                    <span className={styles.buttonText}>{t("Cancel")}</span>
                   </button>
                   <button
                     type="submit"
@@ -215,7 +217,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
                     disabled={isSubmitting}
                   >
                     <span className={styles.buttonText}>
-                      {isSubmitting ? 'Updating...' : 'Update'}
+                      {isSubmitting ? t('Updating...') : t('Update')}
                     </span>
                   </button>
                 </div>

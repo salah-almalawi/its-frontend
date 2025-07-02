@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   fetchManagerDetails,
@@ -18,6 +18,7 @@ import ManagerDetails from '@/components/ManagerDetails/ManagerDetails';
 
 export default function ManagerDetailsPage() {
   const params = useParams();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   
   // Redux state
@@ -41,14 +42,14 @@ export default function ManagerDetailsPage() {
 
   const handleUpdate = (manager) => {
     // التوجه إلى صفحة التحديث
-    window.location.href = `/managers/edit/${manager._id || manager.id}`;
+    router.push(`/managers/edit/${manager._id || manager.id}`);
   };
 
   const handleDelete = async (managerId) => {
     try {
       await dispatch(deleteManager(managerId)).unwrap();
       // التوجه إلى قائمة المديرين
-      window.location.href = '/managers';
+      router.push('/managers');
     } catch (error) {
       console.error('Error deleting manager:', error);
     }

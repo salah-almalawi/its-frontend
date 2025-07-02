@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   fetchManagers,
@@ -13,7 +15,9 @@ import {
 import styles from './ManagersTable.module.css';
 
 const ManagersTable = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   
   // Redux state
   const managers = useAppSelector(selectManagers);
@@ -33,11 +37,11 @@ const ManagersTable = () => {
   }, [dispatch]);
 
   const handleAddManager = () => {
-    window.location.href = '/managers/new';
+    router.push('/managers/new');
   };
 
   const handleRowClick = (managerId) => {
-    window.location.href = `/managers/${managerId}`;
+    router.push(`/managers/${managerId}`);
   };
 
   const handleRetry = () => {
@@ -54,7 +58,7 @@ const ManagersTable = () => {
             <div className={styles.layoutContentContainer}>
               <div className={styles.loadingContainer}>
                 <div className={styles.loader}></div>
-                <p>Loading managers...</p>
+                <p>{t("Loading managers...")}</p>
               </div>
             </div>
           </div>
@@ -71,12 +75,12 @@ const ManagersTable = () => {
           <div className={styles.contentWrapper}>
             <div className={styles.layoutContentContainer}>
               <div className={styles.errorContainer}>
-                <p>Error loading managers: {error}</p>
+                <p>{t("Error loading managers: {{error}}", { error })}</p>
                 <button 
                   onClick={handleRetry}
                   className={styles.retryButton}
                 >
-                  Try Again
+                  {t("Try Again")}
                 </button>
               </div>
             </div>
@@ -92,12 +96,12 @@ const ManagersTable = () => {
         <div className={styles.contentWrapper}>
           <div className={styles.layoutContentContainer}>
             <div className={styles.header}>
-              <p className={styles.title}>Managers</p>
+              <p className={styles.title}>{t("Managers")}</p>
               <button
                 className={styles.addButton}
                 onClick={handleAddManager}
               >
-                <span className={styles.buttonText}>Add Manager</span>
+                <span className={styles.buttonText}>{t("Add Manager")}</span>
               </button>
             </div>
             <div className={styles.tableContainer}>
@@ -106,16 +110,13 @@ const ManagersTable = () => {
                   <thead>
                     <tr className={styles.headerRow}>
                       <th className={`${styles.headerCell} ${styles.nameColumn}`}>
-                        Name
+                        {t("Name")}
                       </th>
                       <th className={`${styles.headerCell} ${styles.rankColumn}`}>
-                        Rank
+                        {t("Rank")}
                       </th>
                       <th className={`${styles.headerCell} ${styles.departmentColumn}`}>
-                        Department
-                      </th>
-                      <th className={`${styles.headerCell} ${styles.actionsColumn}`}>
-                        Actions
+                        {t("Department")}
                       </th>
                     </tr>
                   </thead>
@@ -135,35 +136,17 @@ const ManagersTable = () => {
                         <td className={`${styles.dataCell} ${styles.departmentColumn} ${styles.secondaryCell}`}>
                           {manager.department}
                         </td>
-                        <td className={`${styles.dataCell} ${styles.actionsColumn}`}>
-                          <div className={styles.actionButtons}>
-                            <Link 
-                              href={`/managers/${manager._id || manager.id}`}
-                              className={styles.viewButton}
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              View
-                            </Link>
-                            <Link 
-                              href={`/managers/edit/${manager._id || manager.id}`}
-                              className={styles.editButton}
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              Edit
-                            </Link>
-                          </div>
-                        </td>
                       </tr>
                     ))}
                     {managers.length === 0 && (
                       <tr className={styles.emptyRow}>
-                        <td colSpan="4" className={styles.emptyCell}>
-                          No managers found. 
+                        <td colSpan="3" className={styles.emptyCell}>
+                          {t("No managers found.")} 
                           <button 
                             onClick={handleAddManager}
                             className={styles.addFirstButton}
                           >
-                            Add your first manager
+                            {t("Add your first manager")}
                           </button>
                         </td>
                       </tr>

@@ -1,4 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900');
+.container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: white;
+  font-family: Inter, "Noto Sans", sans-serif;
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+.layoutContainer {
+  display: flex;
+  height: 100%;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+/* @import url('https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900'); */
 
 .container {
   position: relative;
@@ -9,6 +28,7 @@
   background-color: white;
   font-family: Inter, "Noto Sans", sans-serif;
   overflow-x: hidden;
+  direction: rtl;
 }
 
 .layoutContainer {
@@ -105,8 +125,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error State */
@@ -140,6 +165,7 @@
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   container-type: inline-size;
+  direction: rtl;
 }
 
 .tableWrapper {
@@ -157,11 +183,17 @@
 }
 
 .headerRow {
-  background-color: white;
+  background-color: #f8f9fa;
+  /* Light gray background */
+  /* Same as dataRow border */
+
 }
 
 .headerCell {
-  padding: 0.75rem 1rem;
+  padding-inline-start: 0.5rem;
+  /* Same as dataCell padding */
+  padding-inline-end: 1rem;
+  /* Same as dataCell padding */
   text-align: left;
   color: #111418;
   font-size: 0.875rem;
@@ -189,6 +221,7 @@
   line-height: normal;
   width: 400px;
   vertical-align: middle;
+  text-align: left;
 }
 
 .nameCell {
@@ -267,7 +300,7 @@
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   cursor: pointer;
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
   transition: background-color 0.2s ease;
 }
 
@@ -310,42 +343,42 @@
 /* Responsive adjustments for actions */
 @media (max-width: 768px) {
   .contentWrapper {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
   }
-  
+
   .header {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .title {
     min-width: auto;
     font-size: 1.5rem;
   }
-  
+
   .addButton {
     max-width: none;
     width: 100%;
   }
-  
+
   .headerCell,
   .dataCell {
     width: auto;
     min-width: 120px;
   }
-  
+
   .actionButtons {
     flex-direction: column;
     gap: 0.25rem;
   }
-  
+
   .viewButton,
   .editButton {
     width: 100%;
     text-align: center;
   }
-  
+
   .actionsColumn {
     min-width: 80px;
     width: 80px !important;
@@ -356,15 +389,15 @@
   .tableWrapper {
     overflow-x: auto;
   }
-  
+
   .table {
     min-width: 500px;
   }
-  
+
   .actionButtons {
     gap: 0.125rem;
   }
-  
+
   .viewButton,
   .editButton {
     padding: 0.125rem 0.5rem;

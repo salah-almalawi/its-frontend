@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/components/Auth/AuthProvider';
+import { useTranslation } from 'react-i18next';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
@@ -12,6 +13,7 @@ const Navbar = () => {
     const pathname = usePathname();
     const [showUserMenu, setShowUserMenu] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const { t } = useTranslation();
 
     // Don't show navbar on login page or if not authenticated
     if (!isAuthenticated() || pathname === '/login') {
@@ -45,7 +47,7 @@ const Navbar = () => {
                 {/* Logo/Brand */}
                 <div className={styles.navBrand}>
                     <Link href="/managers" className={styles.brandLink}>
-                        <span className={styles.brandText}>ITS System</span>
+                        <span className={styles.brandText}>{t("ITS System")}</span>
                     </Link>
                 </div>
 
@@ -55,13 +57,13 @@ const Navbar = () => {
                         href="/managers"
                         className={`${styles.navLink} ${isActivePath('/managers') ? styles.navLinkActive : ''}`}
                     >
-                        Managers
+                        {t("Managers")}
                     </Link>
                     <Link
                         href="/managers/new"
                         className={`${styles.navLink} ${isActivePath('/managers/new') ? styles.navLinkActive : ''}`}
                     >
-                        Add Manager
+                        {t("Add Manager")}
                     </Link>
                 </div>
 
@@ -74,10 +76,10 @@ const Navbar = () => {
                     >
                         <div className={styles.userAvatar}>
                             <span className={styles.userInitial}>
-                                {user?.username?.charAt(0)?.toUpperCase() || 'U'}
+                                {user?.username?.charAt(0)?.toUpperCase() || t('U')}
                             </span>
                         </div>
-                        <span className={styles.username}>{user?.username || 'User'}</span>
+                        <span className={styles.username}>{user?.username || t('User')}</span>
                         <svg
                             className={`${styles.dropdownIcon} ${showUserMenu ? styles.dropdownIconRotated : ''}`}
                             fill="none"
@@ -94,7 +96,7 @@ const Navbar = () => {
                             <div className={styles.dropdownContent}>
                                 <div className={styles.userInfo}>
                                     <p className={styles.userInfoName}>{user?.username}</p>
-                                    <p className={styles.userInfoRole}>Manager</p>
+                                    <p className={styles.userInfoRole}>{t("Manager")}</p>
                                 </div>
                                 <div className={styles.dropdownDivider}></div>
                                 <button
@@ -105,7 +107,7 @@ const Navbar = () => {
                                     <svg className={styles.logoutIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                     </svg>
-                                    {isLoggingOut ? 'Logging out...' : 'Logout'}
+                                    {isLoggingOut ? t('Logging out...') : t('Logout')}
                                 </button>
                             </div>
                         </div>

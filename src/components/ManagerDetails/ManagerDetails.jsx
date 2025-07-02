@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
+
 import styles from './ManagerDetails.module.css';
 
 const ManagerDetails = ({
@@ -25,6 +26,7 @@ const ManagerDetails = ({
     onDelete,
     onPrintReport
 }) => {
+    const { t } = useTranslation();
     const [isDeleting, setIsDeleting] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -73,73 +75,50 @@ const ManagerDetails = ({
                         {/* Breadcrumb */}
                         <div className={styles.breadcrumb}>
                             <Link href="/managers" className={styles.breadcrumbLink}>
-                                Managers
+                                {t("Managers")}
                             </Link>
                             <span className={styles.breadcrumbSeparator}>/</span>
-                            <span className={styles.breadcrumbCurrent}>Manager Details</span>
+                            <span className={styles.breadcrumbCurrent}>{t("Manager Details")}</span>
                         </div>
 
                         {/* Page Header */}
                         <div className={styles.headerContainer}>
                             <div className={styles.headerContent}>
-                                <p className={styles.title}>Manager Details</p>
+                                <p className={styles.title}>{t("Manager Details")}</p>
                                 <p className={styles.subtitle}>
-                                    View and manage details for this manager.
+                                    {t("View and manage details for this manager.")}
                                 </p>
                             </div>
                         </div>
 
-                        {/* Manager Profile */}
-                        <div className={styles.profileContainer}>
-                            <div className={styles.profileContent}>
-                                <div className={styles.profileInfo}>
-                                    <div className={styles.avatarContainer}>
-                                        <Image
-                                            src={manager.avatar}
-                                            alt={`${manager.name} avatar`}
-                                            width={128}
-                                            height={128}
-                                            className={styles.avatar}
-                                        />
-                                    </div>
-                                    <div className={styles.managerInfo}>
-                                        <p className={styles.managerName}>{manager.name}</p>
-                                        <p className={styles.managerRole}>
-                                            {manager.rank}, {manager.department}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         {/* Manager Information Section */}
-                        <h2 className={styles.sectionTitle}>Manager Information</h2>
+                        <h2 className={styles.sectionTitle}>{t("Manager Information")}</h2>
                         <div className={styles.infoGrid}>
                             <div className={styles.infoRow}>
-                                <p className={styles.infoLabel}>Rank</p>
+                                <p className={styles.infoLabel}>{t("Rank")}</p>
                                 <p className={styles.infoValue}>{manager.rank}</p>
                             </div>
                             <div className={styles.infoRow}>
-                                <p className={styles.infoLabel}>Department</p>
+                                <p className={styles.infoLabel}>{t("Department")}</p>
                                 <p className={styles.infoValue}>{manager.department}</p>
                             </div>
                         </div>
 
                         {/* Last Rounds Section */}
-                        <h2 className={styles.sectionTitle}>Last Rounds</h2>
+                        <h2 className={styles.sectionTitle}>{t("Last Rounds")}</h2>
                         <div className={styles.tableContainer}>
                             <div className={styles.tableWrapper}>
                                 <table className={styles.table}>
                                     <thead>
                                         <tr className={styles.headerRow}>
                                             <th className={`${styles.headerCell} ${styles.locationColumn}`}>
-                                                Location
+                                                {t("Location")}
                                             </th>
                                             <th className={`${styles.headerCell} ${styles.dayColumn}`}>
-                                                Day
+                                                {t("Day")}
                                             </th>
                                             <th className={`${styles.headerCell} ${styles.dateColumn}`}>
-                                                Hijri Date
+                                                {t("Hijri Date")}
                                             </th>
                                         </tr>
                                     </thead>
@@ -160,7 +139,7 @@ const ManagerDetails = ({
                                         {rounds.length === 0 && (
                                             <tr className={styles.emptyRow}>
                                                 <td colSpan="3" className={styles.emptyCell}>
-                                                    No rounds available
+                                                    {t("No rounds available")}
                                                 </td>
                                             </tr>
                                         )}
@@ -176,7 +155,7 @@ const ManagerDetails = ({
                                     onClick={handlePrintReport}
                                     className={styles.printButton}
                                 >
-                                    <span className={styles.buttonText}>Print Report</span>
+                                    <span className={styles.buttonText}>{t("Print Report")}</span>
                                 </button>
                             </div>
 
@@ -187,7 +166,7 @@ const ManagerDetails = ({
                                     disabled={isDeleting}
                                 >
                                     <span className={styles.buttonText}>
-                                        {isDeleting ? 'Deleting...' : 'Delete Manager'}
+                                        {isDeleting ? t('Deleting...') : t('Delete Manager')}
                                     </span>
                                 </button>
 
@@ -195,7 +174,7 @@ const ManagerDetails = ({
                                     onClick={handleUpdate}
                                     className={styles.updateButton}
                                 >
-                                    <span className={styles.buttonText}>Update Manager</span>
+                                    <span className={styles.buttonText}>{t("Update Manager")}</span>
                                 </button>
                             </div>
                         </div>
@@ -208,12 +187,11 @@ const ManagerDetails = ({
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
                         <div className={styles.modalHeader}>
-                            <h3 className={styles.modalTitle}>Confirm Delete</h3>
+                            <h3 className={styles.modalTitle}>{t("Confirm Delete")}</h3>
                         </div>
                         <div className={styles.modalBody}>
                             <p className={styles.modalText}>
-                                Are you sure you want to delete <strong>{manager.name}</strong>?
-                                This action cannot be undone.
+                                {t("Are you sure you want to delete {{managerName}}? This action cannot be undone.", { managerName: manager.name })}
                             </p>
                         </div>
                         <div className={styles.modalActions}>
@@ -221,14 +199,14 @@ const ManagerDetails = ({
                                 onClick={handleDeleteCancel}
                                 className={styles.modalCancelButton}
                             >
-                                Cancel
+                                {t("Cancel")}
                             </button>
                             <button
                                 onClick={handleDeleteConfirm}
                                 className={styles.modalDeleteButton}
                                 disabled={isDeleting}
                             >
-                                {isDeleting ? 'Deleting...' : 'Delete'}
+                                {isDeleting ? t('Deleting...') : t('Delete')}
                             </button>
                         </div>
                     </div>
