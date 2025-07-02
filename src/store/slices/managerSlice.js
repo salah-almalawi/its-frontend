@@ -18,8 +18,13 @@ export const fetchManagerDetails = createAsyncThunk(
     'managers/fetchManagerDetails',
     async (managerId, { rejectWithValue }) => {
         try {
+            // استخدام الـ endpoint الصحيح
             const response = await api.get(`/managers/${managerId}`);
-            return response.data;
+            // تعديل البيانات لتتوافق مع الـ component
+            return {
+                manager: response.data,
+                allRounds: response.data.lastRounds || []
+            };
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch manager details');
         }
@@ -30,7 +35,12 @@ export const createManager = createAsyncThunk(
     'managers/createManager',
     async (managerData, { rejectWithValue }) => {
         try {
-            const response = await api.post('/managers', managerData);
+            // تحويل rank إلى رقم
+            const dataToSend = {
+                ...managerData,
+                rank: parseInt(managerData.rank, 10)
+            };
+            const response = await api.post('/managers', dataToSend);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to create manager');
@@ -38,19 +48,23 @@ export const createManager = createAsyncThunk(
     }
 );
 
-// src/store/slices/managerSlice.js - تحديث دالة updateManager
 export const updateManager = createAsyncThunk(
     'managers/updateManager',
     async ({ id, data }, { rejectWithValue }) => {
         try {
-            // تغيير من PATCH إلى PUT
-            const response = await api.put(`/managers/${id}`, data);
+            // تحويل rank إلى رقم
+            const dataToSend = {
+                ...data,
+                rank: parseInt(data.rank, 10)
+            };
+            const response = await api.put(`/managers/${id}`, dataToSend);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to update manager');
         }
     }
 );
+
 export const deleteManager = createAsyncThunk(
     'managers/deleteManager',
     async (managerId, { rejectWithValue }) => {

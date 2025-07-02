@@ -26,14 +26,13 @@ const CreateManager = ({ onSuccess, onCancel }) => {
 
   const [formErrors, setFormErrors] = useState({});
 
+  // خيارات الـ rank من 1 إلى 16
   const rankOptions = [
     { value: '', label: 'Select rank' },
-    { value: 'Manager', label: 'Manager' },
-    { value: 'Senior Manager', label: 'Senior Manager' },
-    { value: 'Director', label: 'Director' },
-    { value: 'Senior Director', label: 'Senior Director' },
-    { value: 'VP', label: 'Vice President' },
-    { value: 'SVP', label: 'Senior Vice President' }
+    ...Array.from({ length: 16 }, (_, i) => ({
+      value: (i + 1).toString(),
+      label: `Rank ${i + 1}`
+    }))
   ];
 
   // Clear errors when component unmounts

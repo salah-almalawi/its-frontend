@@ -11,19 +11,19 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
   
   const [formData, setFormData] = useState({
     name: manager?.name || '',
-    rank: manager?.rank || '',
+    rank: manager?.rank?.toString() || '', // تحويل الرقم إلى نص للعرض
     department: manager?.department || ''
   });
 
   const [formErrors, setFormErrors] = useState({});
 
+  // خيارات الـ rank من 1 إلى 16
   const rankOptions = [
     { value: '', label: 'Select Rank' },
-    { value: 'Manager', label: 'Manager' },
-    { value: 'Senior Manager', label: 'Senior Manager' },
-    { value: 'Director', label: 'Director' },
-    { value: 'Senior Director', label: 'Senior Director' },
-    { value: 'VP', label: 'Vice President' }
+    ...Array.from({ length: 16 }, (_, i) => ({
+      value: (i + 1).toString(),
+      label: `Rank ${i + 1}`
+    }))
   ];
 
   // Update form data when manager prop changes
@@ -31,7 +31,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
     if (manager) {
       setFormData({
         name: manager.name || '',
-        rank: manager.rank || '',
+        rank: manager.rank?.toString() || '', // تحويل الرقم إلى نص للعرض
         department: manager.department || ''
       });
     }

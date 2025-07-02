@@ -1,14 +1,12 @@
 // Application Constants
 
-// Manager Ranks
+// Manager Ranks - تم تحديثها لتتوافق مع API
 export const MANAGER_RANKS = [
     { value: '', label: 'Select rank' },
-    { value: 'Manager', label: 'Manager' },
-    { value: 'Senior Manager', label: 'Senior Manager' },
-    { value: 'Director', label: 'Director' },
-    { value: 'Senior Director', label: 'Senior Director' },
-    { value: 'VP', label: 'Vice President' },
-    { value: 'SVP', label: 'Senior Vice President' }
+    ...Array.from({ length: 16 }, (_, i) => ({
+        value: (i + 1).toString(),
+        label: `Rank ${i + 1}`
+    }))
 ];
 
 // Common Departments
@@ -25,14 +23,13 @@ export const DEPARTMENTS = [
     'Research & Development'
 ];
 
-// API Endpoints
+// API Endpoints - تم تحديثها لتتوافق مع الـ APIs المعطاة
 export const API_ENDPOINTS = {
     MANAGERS: '/managers',
-    MANAGER_DETAILS: (id) => `/managers/${id}/summary`,
+    MANAGER_BY_ID: (id) => `/managers/${id}`,
     CREATE_MANAGER: '/managers',
     UPDATE_MANAGER: (id) => `/managers/${id}`,
-    DELETE_MANAGER: (id) => `/managers/${id}`,
-    MANAGER_ROUNDS: (id) => `/managers/${id}/rounds`
+    DELETE_MANAGER: (id) => `/managers/${id}`
 };
 
 // Loading States
@@ -68,7 +65,9 @@ export const VALIDATION_RULES = {
         maxLength: 100
     },
     RANK: {
-        required: true
+        required: true,
+        min: 1,
+        max: 16
     },
     DEPARTMENT: {
         required: true,
