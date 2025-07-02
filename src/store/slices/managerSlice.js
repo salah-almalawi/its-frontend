@@ -18,7 +18,7 @@ export const fetchManagerDetails = createAsyncThunk(
     'managers/fetchManagerDetails',
     async (managerId, { rejectWithValue }) => {
         try {
-            const response = await api.post(`/managers/${managerId}/summary`);
+            const response = await api.get(`/managers/${managerId}`);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch manager details');
