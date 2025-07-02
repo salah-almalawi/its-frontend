@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-// Typed hooks for better TypeScript support
+// Custom hooks for better consistency
 export const useAppDispatch = () => useDispatch();
 export const useAppSelector = useSelector;
