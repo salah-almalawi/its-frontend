@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-
+import ReduxProvider from '@/components/Providers/ReduxProvider';
 
 export const metadata = {
   title: 'نظام إدارة ITS',
@@ -10,7 +10,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr">
       <body>
-        {children}
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

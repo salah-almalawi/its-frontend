@@ -1,18 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import {
+  createManager,
+  selectCreateLoading,
+  selectCreateError,
+  clearError
+} from '@/store/slices/managerSlice';
 import styles from './CreateManager.module.css';
 
-const CreateManager = ({ onSave, onCancel }) => {
+const CreateManager = ({ onSuccess, onCancel }) => {
+  const dispatch = useAppDispatch();
+  
+  // Redux state
+  const isSubmitting = useAppSelector(selectCreateLoading);
+  const error = useAppSelector(selectCreateError);
+
   const [formData, setFormData] = useState({
     name: '',
     rank: '',
     department: ''
   });
 
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
 
   const rankOptions = [
     { value: '', label: 'Select rank' },
@@ -23,6 +35,13 @@ const CreateManager = ({ onSave, onCancel }) => {
     { value: 'VP', label: 'Vice President' },
     { value: 'SVP', label: 'Senior Vice President' }
   ];
+
+  // Clear errors when component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(clearError('create'));
+    };
+  }, [dispatch]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -39,7 +58,7 @@ const CreateManager = ({ onSave, onCancel }) => {
       newErrors.department = 'Department is required';
     }
 
-    setErrors(newErrors);
+    setFormErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -50,12 +69,17 @@ const CreateManager = ({ onSave, onCancel }) => {
       [name]: value
     }));
 
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
+    // Clear form error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
         ...prev,
         [name]: ''
       }));
+    }
+
+    // Clear Redux error when user starts typing
+    if (error) {
+      dispatch(clearError('create'));
     }
   };
 
@@ -66,23 +90,26 @@ const CreateManager = ({ onSave, onCancel }) => {
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      if (onSave) {
-        await onSave(formData);
-      }
-
+      const result = await dispatch(createManager(formData)).unwrap();
+      
       // Reset form after successful submission
       setFormData({
         name: '',
         rank: '',
         department: ''
       });
+      setFormErrors({});
+
+      // Call success callback or redirect
+      if (onSuccess) {
+        onSuccess(result);
+      } else {
+        window.location.href = '/managers';
+      }
     } catch (error) {
+      // Error is handled by Redux state
       console.error('Error creating manager:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -93,10 +120,13 @@ const CreateManager = ({ onSave, onCancel }) => {
       rank: '',
       department: ''
     });
-    setErrors({});
+    setFormErrors({});
+    dispatch(clearError('create'));
 
     if (onCancel) {
       onCancel();
+    } else {
+      window.location.href = '/managers';
     }
   };
 
@@ -119,6 +149,15 @@ const CreateManager = ({ onSave, onCancel }) => {
               <p className={styles.title}>Create Manager</p>
             </div>
 
+            {/* Global Error Message */}
+            {error && (
+              <div className={styles.errorContainer}>
+                <div className={styles.errorMessage}>
+                  {error}
+                </div>
+              </div>
+            )}
+
             {/* Form */}
             <form onSubmit={handleSubmit}>
               {/* Name Field */}
@@ -131,10 +170,11 @@ const CreateManager = ({ onSave, onCancel }) => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter name"
-                    className={`${styles.textInput} ${errors.name ? styles.inputError : ''}`}
+                    className={`${styles.textInput} ${formErrors.name ? styles.inputError : ''}`}
+                    disabled={isSubmitting}
                   />
-                  {errors.name && (
-                    <span className={styles.errorMessage}>{errors.name}</span>
+                  {formErrors.name && (
+                    <span className={styles.fieldErrorMessage}>{formErrors.name}</span>
                   )}
                 </label>
               </div>
@@ -147,7 +187,8 @@ const CreateManager = ({ onSave, onCancel }) => {
                     name="rank"
                     value={formData.rank}
                     onChange={handleInputChange}
-                    className={`${styles.selectInput} ${errors.rank ? styles.inputError : ''}`}
+                    className={`${styles.selectInput} ${formErrors.rank ? styles.inputError : ''}`}
+                    disabled={isSubmitting}
                   >
                     {rankOptions.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -155,8 +196,8 @@ const CreateManager = ({ onSave, onCancel }) => {
                       </option>
                     ))}
                   </select>
-                  {errors.rank && (
-                    <span className={styles.errorMessage}>{errors.rank}</span>
+                  {formErrors.rank && (
+                    <span className={styles.fieldErrorMessage}>{formErrors.rank}</span>
                   )}
                 </label>
               </div>
@@ -171,10 +212,11 @@ const CreateManager = ({ onSave, onCancel }) => {
                     value={formData.department}
                     onChange={handleInputChange}
                     placeholder="Enter department"
-                    className={`${styles.textInput} ${errors.department ? styles.inputError : ''}`}
+                    className={`${styles.textInput} ${formErrors.department ? styles.inputError : ''}`}
+                    disabled={isSubmitting}
                   />
-                  {errors.department && (
-                    <span className={styles.errorMessage}>{errors.department}</span>
+                  {formErrors.department && (
+                    <span className={styles.fieldErrorMessage}>{formErrors.department}</span>
                   )}
                 </label>
               </div>
