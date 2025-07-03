@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './Register.module.css';
 
 const Register = () => {
@@ -8,6 +9,7 @@ const Register = () => {
         username: '',
         password: ''
     });
+    const router = useRouter();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -65,6 +67,13 @@ const Register = () => {
                                     className={styles.createButton}
                                 >
                                     <span className={styles.buttonText}>إنشاء مستخدم</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    className={styles.cancelButton}
+                                    onClick={() => router.back()}
+                                >
+                                    <span className={styles.buttonText}>إلغاء</span>
                                 </button>
                             </div>
                         </form>

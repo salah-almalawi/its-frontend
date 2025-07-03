@@ -24,18 +24,16 @@ const AuthGuard = ({ children }) => {
             }
 
             if (isAuthenticated() && pathname === '/login') {
-                // Redirect to dashboard if authenticated and trying to access login
-                router.push('/dashboard');
+                // Do nothing if authenticated and trying to access login (allow them to stay on login page)
                 return;
             }
 
-            // Handle root path redirect
+            // Handle root path behavior
             if (pathname === '/') {
-                if (isAuthenticated()) {
-                    router.push('/dashboard');
-                } else {
+                if (!isAuthenticated()) {
                     router.push('/login');
                 }
+                setIsReady(true); // Ready to render children if authenticated or redirecting to login
                 return;
             }
 

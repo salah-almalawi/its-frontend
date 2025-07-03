@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/components/Auth/AuthProvider';
 import { useTranslation } from 'react-i18next';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
@@ -26,7 +27,7 @@ const Navbar = () => {
 
     return (
         <header className={styles.header}>
-            <div className={styles.navContainer}>
+            <div className={styles.navAndBreadcrumbsContainer}>
                 <nav className={styles.navLinks}>
                     <Link className={styles.navLink} href="/dashboard">
                         لوحة التحكم
@@ -38,6 +39,9 @@ const Navbar = () => {
                         الجولات
                     </Link>
                 </nav>
+                <Breadcrumbs />
+            </div>
+            <div className={styles.logoutButtonContainer}>
                 <button onClick={handleLogout} className={styles.logoutButton}>
                     <span className={styles.logoutButtonText}>تسجيل الخروج</span>
                 </button>

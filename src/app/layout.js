@@ -1,18 +1,24 @@
-// src/app/layout.js
+'use client';
+
 import '../styles/globals.css';
 import Head from 'next/head';
+import { usePathname } from 'next/navigation';
 import { AuthProvider } from '@/components/Auth/AuthProvider';
 import AuthGuard from '@/components/Auth/AuthGuard';
 import Navbar from '@/components/Navbar/Navbar';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import ReduxProvider from '@/components/Providers/ReduxProvider';
 import { I18nClientProvider } from '@/components/Providers/I18nClientProvider';
 
-export const metadata = {
+const metadata = {
   title: 'نظام إدارة ITS',
   description: 'نظام إدارة جولات التفتيش',
 };
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const isLoginPage = pathname === '/login';
+
   return (
     <html lang="ar" dir="rtl">
       <head>
@@ -25,12 +31,12 @@ export default function RootLayout({ children }) {
 
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
       </head>
-      <body>
+      <body className={isLoginPage ? "" : "pt-32"}> {/* Adjust padding based on Navbar and Breadcrumbs height */}
         <ReduxProvider>
           <AuthProvider>
             <AuthGuard>
               <I18nClientProvider>
-                <Navbar />
+                {!isLoginPage && <Navbar />}
                 <main>
                   {children}
                 </main>

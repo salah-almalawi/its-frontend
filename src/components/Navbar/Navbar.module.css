@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900');
 
 .header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -37,18 +41,20 @@
     margin: 0;
 }
 
-.navContainer {
+.navAndBreadcrumbsContainer {
     display: flex;
-    flex: 1;
-    justify-content: flex-end;
-    gap: 2rem;
-    align-items: center;
+    flex-direction: row; /* Changed to row */
+    align-items: center; /* Align items vertically in the center */
+    gap: 1rem; /* Adjust gap between nav links and breadcrumbs */
 }
 
 .navLinks {
     display: flex;
     align-items: center;
     gap: 2.25rem;
+}
+
+.logoutButtonContainer {
 }
 
 .navLink {

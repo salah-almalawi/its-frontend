@@ -31,9 +31,11 @@ const Dashboard = () => {
                         <h2 className={styles.sectionTitle}>{t('Quick Actions')}</h2>
                         <div className={styles.actionsContainer}>
                             <div className={styles.actionGroup}>
-                                <button className={styles.primaryButton}>
-                                    <span className={styles.buttonText}>{t('Create Account')}</span>
-                                </button>
+                                <Link href="/register" passHref>
+                                    <button className={styles.primaryButton}>
+                                        <span className={styles.buttonText}>{t('Create Account')}</span>
+                                    </button>
+                                </Link>
                                 <Link href="/managers/new" passHref>
                                     <button className={styles.secondaryButton}>
                                         <span className={styles.buttonText}>{t('Create Manager')}</span>
