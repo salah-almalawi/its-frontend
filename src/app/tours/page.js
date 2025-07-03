@@ -1,9 +1,9 @@
-import React from 'react'
+import RoundsTable from '@/components/RoundsTable/RoundsTable';
 
-function page() {
+export default function ToursPage() {
     return (
-        <div>page</div>
-    )
+        <div>
+            <RoundsTable />
+        </div>
+    );
 }
-
-export default page
