@@ -2,8 +2,6 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   fetchManagers,
@@ -15,9 +13,7 @@ import {
 import styles from './ManagersTable.module.css';
 
 const ManagersTable = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
   
   // Redux state
   const managers = useAppSelector(selectManagers);
@@ -37,11 +33,11 @@ const ManagersTable = () => {
   }, [dispatch]);
 
   const handleAddManager = () => {
-    router.push('/managers/new');
+    window.location.href = '/managers/new';
   };
 
   const handleRowClick = (managerId) => {
-    router.push(`/managers/${managerId}`);
+    window.location.href = `/managers/${managerId}`;
   };
 
   const handleRetry = () => {
@@ -58,7 +54,7 @@ const ManagersTable = () => {
             <div className={styles.layoutContentContainer}>
               <div className={styles.loadingContainer}>
                 <div className={styles.loader}></div>
-                <p>{t("Loading managers...")}</p>
+                <p>جاري تحميل المديرين...</p>
               </div>
             </div>
           </div>
@@ -75,12 +71,12 @@ const ManagersTable = () => {
           <div className={styles.contentWrapper}>
             <div className={styles.layoutContentContainer}>
               <div className={styles.errorContainer}>
-                <p>{t("Error loading managers: {{error}}", { error })}</p>
+                <p>خطأ في تحميل المديرين: {error}</p>
                 <button 
                   onClick={handleRetry}
                   className={styles.retryButton}
                 >
-                  {t("Try Again")}
+                  إعادة المحاولة
                 </button>
               </div>
             </div>
@@ -96,12 +92,12 @@ const ManagersTable = () => {
         <div className={styles.contentWrapper}>
           <div className={styles.layoutContentContainer}>
             <div className={styles.header}>
-              <p className={styles.title}>{t("Managers")}</p>
+              <p className={styles.title}>المديرين</p>
               <button
                 className={styles.addButton}
                 onClick={handleAddManager}
               >
-                <span className={styles.buttonText}>{t("Add Manager")}</span>
+                <span className={styles.buttonText}>إضافة مدير</span>
               </button>
             </div>
             <div className={styles.tableContainer}>
@@ -110,13 +106,13 @@ const ManagersTable = () => {
                   <thead>
                     <tr className={styles.headerRow}>
                       <th className={`${styles.headerCell} ${styles.nameColumn}`}>
-                        {t("Name")}
+                        الاسم
                       </th>
                       <th className={`${styles.headerCell} ${styles.rankColumn}`}>
-                        {t("Rank")}
+                        الرتبة
                       </th>
                       <th className={`${styles.headerCell} ${styles.departmentColumn}`}>
-                        {t("Department")}
+                        القسم
                       </th>
                     </tr>
                   </thead>
@@ -140,13 +136,13 @@ const ManagersTable = () => {
                     ))}
                     {managers.length === 0 && (
                       <tr className={styles.emptyRow}>
-                        <td colSpan="3" className={styles.emptyCell}>
-                          {t("No managers found.")} 
+                        <td colSpan="4" className={styles.emptyCell}>
+                          لا توجد مديرين.
                           <button 
                             onClick={handleAddManager}
                             className={styles.addFirstButton}
                           >
-                            {t("Add your first manager")}
+                            إضافة أول مدير
                           </button>
                         </td>
                       </tr>

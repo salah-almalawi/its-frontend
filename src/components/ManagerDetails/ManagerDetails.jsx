@@ -95,6 +95,10 @@ const ManagerDetails = ({
                         <h2 className={styles.sectionTitle}>{t("Manager Information")}</h2>
                         <div className={styles.infoGrid}>
                             <div className={styles.infoRow}>
+                                <p className={styles.infoLabel}>{t("Name")}</p>
+                                <p className={styles.infoValue}>{manager.name}</p>
+                            </div>
+                            <div className={styles.infoRow}>
                                 <p className={styles.infoLabel}>{t("Rank")}</p>
                                 <p className={styles.infoValue}>{manager.rank}</p>
                             </div>

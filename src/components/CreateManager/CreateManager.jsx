@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   createManager,
@@ -14,9 +12,7 @@ import {
 import styles from './CreateManager.module.css';
 
 const CreateManager = ({ onSuccess, onCancel }) => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
   
   // Redux state
   const isSubmitting = useAppSelector(selectCreateLoading);
@@ -32,10 +28,10 @@ const CreateManager = ({ onSuccess, onCancel }) => {
 
   // خيارات الـ rank من 1 إلى 16
   const rankOptions = [
-    { value: '', label: t('Select rank') },
+    { value: '', label: 'اختر الرتبة' },
     ...Array.from({ length: 16 }, (_, i) => ({
       value: (i + 1).toString(),
-      label: `Rank ${i + 1}`
+      label: `الرتبة ${i + 1}`
     }))
   ];
 
@@ -50,15 +46,15 @@ const CreateManager = ({ onSuccess, onCancel }) => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = t('Name is required');
+      newErrors.name = 'الاسم مطلوب';
     }
 
     if (!formData.rank) {
-      newErrors.rank = t('Rank is required');
+      newErrors.rank = 'الرتبة مطلوبة';
     }
 
     if (!formData.department.trim()) {
-      newErrors.department = t('Department is required');
+      newErrors.department = 'القسم مطلوب';
     }
 
     setFormErrors(newErrors);
@@ -108,7 +104,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
       if (onSuccess) {
         onSuccess(result);
       } else {
-        router.push('/managers');
+        window.location.href = '/managers';
       }
     } catch (error) {
       // Error is handled by Redux state
@@ -129,7 +125,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
     if (onCancel) {
       onCancel();
     } else {
-      router.push('/managers');
+      window.location.href = '/managers';
     }
   };
 
@@ -141,15 +137,15 @@ const CreateManager = ({ onSuccess, onCancel }) => {
             {/* Breadcrumb */}
             <div className={styles.breadcrumb}>
               <Link href="/managers" className={styles.breadcrumbLink}>
-                {t("Managers")}
+                المديرين
               </Link>
               <span className={styles.breadcrumbSeparator}>/</span>
-              <span className={styles.breadcrumbCurrent}>{t("Create Manager")}</span>
+              <span className={styles.breadcrumbCurrent}>إنشاء مدير</span>
             </div>
 
             {/* Page Title */}
             <div className={styles.titleContainer}>
-              <p className={styles.title}>{t("Create Manager")}</p>
+              <p className={styles.title}>إنشاء مدير</p>
             </div>
 
             {/* Global Error Message */}
@@ -166,13 +162,13 @@ const CreateManager = ({ onSuccess, onCancel }) => {
               {/* Name Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>{t("Name")}</p>
+                  <p className={styles.labelText}>الاسم</p>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder={t("Enter name")}
+                    placeholder="أدخل الاسم"
                     className={`${styles.textInput} ${formErrors.name ? styles.inputError : ''}`}
                     disabled={isSubmitting}
                   />
@@ -185,7 +181,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
               {/* Rank Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>{t("Rank")}</p>
+                  <p className={styles.labelText}>الرتبة</p>
                   <select
                     name="rank"
                     value={formData.rank}
@@ -208,13 +204,13 @@ const CreateManager = ({ onSuccess, onCancel }) => {
               {/* Department Field */}
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
-                  <p className={styles.labelText}>{t("Department")}</p>
+                  <p className={styles.labelText}>القسم</p>
                   <input
                     type="text"
                     name="department"
                     value={formData.department}
                     onChange={handleInputChange}
-                    placeholder={t("Enter department")}
+                    placeholder="أدخل القسم"
                     className={`${styles.textInput} ${formErrors.department ? styles.inputError : ''}`}
                     disabled={isSubmitting}
                   />
@@ -233,7 +229,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
                     className={styles.cancelButton}
                     disabled={isSubmitting}
                   >
-                    <span className={styles.buttonText}>{t("Cancel")}</span>
+                    <span className={styles.buttonText}>إلغاء</span>
                   </button>
                   <button
                     type="submit"
@@ -241,7 +237,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
                     disabled={isSubmitting}
                   >
                     <span className={styles.buttonText}>
-                      {isSubmitting ? t('Creating...') : t('Create')}
+                      {isSubmitting ? 'جاري الإنشاء...' : 'إنشاء'}
                     </span>
                   </button>
                 </div>
