@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   fetchManagers,
@@ -14,6 +15,7 @@ import styles from './ManagersTable.module.css';
 
 const ManagersTable = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   
   // Redux state
   const managers = useAppSelector(selectManagers);
@@ -33,11 +35,11 @@ const ManagersTable = () => {
   }, [dispatch]);
 
   const handleAddManager = () => {
-    window.location.href = '/managers/new';
+    router.push('/managers/new');
   };
 
   const handleRowClick = (managerId) => {
-    window.location.href = `/managers/${managerId}`;
+    router.push(`/managers/${managerId}`);
   };
 
   const handleRetry = () => {

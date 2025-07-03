@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import {
   createManager,
@@ -13,6 +14,7 @@ import styles from './CreateManager.module.css';
 
 const CreateManager = ({ onSuccess, onCancel }) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   
   // Redux state
   const isSubmitting = useAppSelector(selectCreateLoading);
@@ -97,7 +99,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
       if (onSuccess) {
         onSuccess(result);
       } else {
-        window.location.href = '/managers';
+        router.push('/managers');
       }
     } catch (error) {
       // Error is handled by Redux state
@@ -118,7 +120,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
     if (onCancel) {
       onCancel();
     } else {
-      window.location.href = '/managers';
+      router.push('/managers');
     }
   };
 
