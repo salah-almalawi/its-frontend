@@ -9,6 +9,7 @@
     background-color: white;
     font-family: Inter, "Noto Sans", sans-serif;
     overflow-x: hidden;
+    direction: rtl;
 }
 
 .layoutContainer {

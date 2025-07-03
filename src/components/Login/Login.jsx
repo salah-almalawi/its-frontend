@@ -112,8 +112,8 @@ const Login = () => {
             <div className={styles.layoutContainer}>
                 <div className={styles.contentWrapper}>
                     <div className={styles.layoutContentContainer}>
-                        <h2 className={styles.title}>Log in to Connect</h2>
-                        
+                        <h2 className={styles.title}>تسجيل الدخول</h2>
+
                         {apiError && (
                             <div className={styles.errorContainer}>
                                 <p className={styles.errorMessage}>{apiError}</p>
@@ -128,7 +128,7 @@ const Login = () => {
                                         name="username"
                                         value={formData.username}
                                         onChange={handleInputChange}
-                                        placeholder="Username"
+                                        placeholder="اسم المستخدم"
                                         className={`${styles.formInput} ${errors.username ? styles.inputError : ''}`}
                                         disabled={isSubmitting}
                                     />
@@ -145,7 +145,7 @@ const Login = () => {
                                         name="password"
                                         value={formData.password}
                                         onChange={handleInputChange}
-                                        placeholder="Password"
+                                        placeholder="كلمة المرور"
                                         className={`${styles.formInput} ${errors.password ? styles.inputError : ''}`}
                                         disabled={isSubmitting}
                                     />
@@ -162,7 +162,7 @@ const Login = () => {
                                     disabled={isSubmitting}
                                 >
                                     <span className={styles.buttonText}>
-                                        {isSubmitting ? 'جاري تسجيل الدخول...' : 'Log in'}
+                                        {isSubmitting ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
                                     </span>
                                 </button>
                             </div>
