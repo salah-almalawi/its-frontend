@@ -35,12 +35,7 @@ export const createManager = createAsyncThunk(
     'managers/createManager',
     async (managerData, { rejectWithValue }) => {
         try {
-            // تحويل rank إلى رقم
-            const dataToSend = {
-                ...managerData,
-                rank: parseInt(managerData.rank, 10)
-            };
-            const response = await api.post('/managers', dataToSend);
+            const response = await api.post('/managers', managerData);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to create manager');
@@ -52,12 +47,7 @@ export const updateManager = createAsyncThunk(
     'managers/updateManager',
     async ({ id, data }, { rejectWithValue }) => {
         try {
-            // تحويل rank إلى رقم
-            const dataToSend = {
-                ...data,
-                rank: parseInt(data.rank, 10)
-            };
-            const response = await api.put(`/managers/${id}`, dataToSend);
+            const response = await api.put(`/managers/${id}`, data);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to update manager');
@@ -207,6 +197,7 @@ const managerSlice = createSlice({
             })
             .addCase(createManager.fulfilled, (state, action) => {
                 state.loading.create = false;
+                console.log('Created manager payload:', action.payload); // Add this line
                 state.managers.push(action.payload);
                 state.error.create = null;
             })

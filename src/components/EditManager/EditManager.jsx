@@ -17,14 +17,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
 
   const [formErrors, setFormErrors] = useState({});
 
-  // خيارات الـ rank من 1 إلى 16
-  const rankOptions = [
-    { value: '', label: 'اختر الرتبة' },
-    ...Array.from({ length: 16 }, (_, i) => ({
-      value: (i + 1).toString(),
-      label: `الرتبة ${i + 1}`
-    }))
-  ];
+  
 
   // Update form data when manager prop changes
   useEffect(() => {
@@ -51,7 +44,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
       newErrors.name = 'الاسم مطلوب';
     }
 
-    if (!formData.rank) {
+    if (!formData.rank.trim()) {
       newErrors.rank = 'الرتبة مطلوبة';
     }
 
@@ -157,20 +150,15 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
                   <p className={styles.labelText}>الرتبة</p>
-                  <select
+                  <input
+                    type="text"
                     name="rank"
                     value={formData.rank}
                     onChange={handleInputChange}
-                    className={`${styles.selectInput} ${formErrors.rank ? styles.inputError : ''}`}
+                    className={`${styles.textInput} ${formErrors.rank ? styles.inputError : ''}`}
                     disabled={isSubmitting}
                     required
-                  >
-                    {rankOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+                  />
                   {formErrors.rank && (
                     <span className={styles.fieldErrorMessage}>{formErrors.rank}</span>
                   )}

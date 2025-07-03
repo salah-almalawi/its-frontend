@@ -26,14 +26,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
 
   const [formErrors, setFormErrors] = useState({});
 
-  // خيارات الـ rank من 1 إلى 16
-  const rankOptions = [
-    { value: '', label: 'اختر الرتبة' },
-    ...Array.from({ length: 16 }, (_, i) => ({
-      value: (i + 1).toString(),
-      label: `الرتبة ${i + 1}`
-    }))
-  ];
+  
 
   // Clear errors when component unmounts
   useEffect(() => {
@@ -49,7 +42,7 @@ const CreateManager = ({ onSuccess, onCancel }) => {
       newErrors.name = 'الاسم مطلوب';
     }
 
-    if (!formData.rank) {
+    if (!formData.rank.trim()) {
       newErrors.rank = 'الرتبة مطلوبة';
     }
 
@@ -182,19 +175,15 @@ const CreateManager = ({ onSuccess, onCancel }) => {
               <div className={styles.fieldContainer}>
                 <label className={styles.fieldLabel}>
                   <p className={styles.labelText}>الرتبة</p>
-                  <select
+                  <input
+                    type="text"
                     name="rank"
                     value={formData.rank}
                     onChange={handleInputChange}
-                    className={`${styles.selectInput} ${formErrors.rank ? styles.inputError : ''}`}
+                    placeholder="أدخل الرتبة"
+                    className={`${styles.textInput} ${formErrors.rank ? styles.inputError : ''}`}
                     disabled={isSubmitting}
-                  >
-                    {rankOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+                  />
                   {formErrors.rank && (
                     <span className={styles.fieldErrorMessage}>{formErrors.rank}</span>
                   )}

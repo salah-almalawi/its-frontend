@@ -42,8 +42,6 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   padding: 1rem;
-  direction: ltr;
-  justify-content: flex-end;
 }
 
 .breadcrumbLink {
