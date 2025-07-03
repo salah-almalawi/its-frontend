@@ -29,7 +29,7 @@ const Navbar = () => {
         <header className={styles.header}>
             <div className={styles.navAndBreadcrumbsContainer}>
                 <nav className={styles.navLinks}>
-                    <Link className={styles.navLink} href="/dashboard">
+                    <Link className={styles.navLink} href="/">
                         لوحة التحكم
                     </Link>
                     <Link className={styles.navLink} href="/managers">

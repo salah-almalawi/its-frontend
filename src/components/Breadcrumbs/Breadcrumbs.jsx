@@ -55,10 +55,17 @@ const Breadcrumbs = () => {
     const isLast = index === pathSegments.length - 1;
     let label = t(segment.charAt(0).toUpperCase() + segment.slice(1));
 
+    // Check if the current segment is 'edit' and the previous is 'managers'
+    if (segment === 'edit' && pathSegments[index - 1] === 'managers') {
+      label = t('Edit');
+    }
     // Check if the current segment is an ID for manager or tour
-    if (pathSegments[index - 1] === 'managers' && currentManager && segment === currentManager._id) {
+    else if (pathSegments[index - 1] === 'managers' && currentManager && segment === currentManager._id) {
       label = currentManager.name;
-    } else if (pathSegments[index - 1] === 'tours' && currentRound && segment === currentRound._id) {
+    } else if (pathSegments[index - 2] === 'managers' && pathSegments[index - 1] === 'edit' && currentManager && segment === currentManager._id) {
+      label = currentManager.name;
+    }
+    else if (pathSegments[index - 1] === 'tours' && currentRound && segment === currentRound._id) {
       label = formatHijriDate(currentRound.Hijri);
     }
     const icon = getIconForSegment(segment);
