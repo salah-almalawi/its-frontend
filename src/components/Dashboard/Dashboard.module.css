@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900');
+
+.container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: white;
+    font-family: Inter, "Noto Sans", sans-serif;
+    overflow-x: hidden;
+}
+
+.layoutContainer {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.contentWrapper {
+    padding-left: 10rem;
+    padding-right: 10rem;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+}
+
+.layoutContentContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 960px;
+    flex: 1;
+}
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+.title {
+    color: #121416;
+    letter-spacing: -0.025em;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    min-width: 18rem;
+    margin: 0;
+}
+
+.sectionTitle {
+    color: #121416;
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 0.75rem;
+    padding-top: 1.25rem;
+    margin: 0;
+}
+
+.actionsContainer {
+    display: flex;
+    justify-content: stretch;
+}
+
+.actionGroup {
+    display: flex;
+    flex: 1;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    justify-content: flex-start;
+}
+
+.singleActionContainer {
+    display: flex;
+    padding: 0.75rem 1rem;
+    justify-content: flex-start;
+}
+
+.primaryButton {
+    display: flex;
+    min-width: 84px;
+    max-width: 480px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 9999px;
+    height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: #dce8f3;
+    color: #121416;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.015em;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.primaryButton:hover {
+    background-color: #c7daf0;
+    transform: translateY(-1px);
+}
+
+.secondaryButton {
+    display: flex;
+    min-width: 84px;
+    max-width: 480px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 9999px;
+    height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: #f1f2f4;
+    color: #121416;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.015em;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+    background-color: #e5e7ea;
+    transform: translateY(-1px);
+}
+
+.buttonText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.summaryContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.summaryCard {
+    display: flex;
+    min-width: 158px;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid #dde1e3;
+}
+
+.cardTitle {
+    color: #121416;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+}
+
+.cardValue {
+    color: #121416;
+    letter-spacing: -0.025em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contentWrapper {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .title {
+        min-width: auto;
+        font-size: 1.5rem;
+    }
+
+    .actionGroup {
+        flex-direction: column;
+    }
+
+    .primaryButton,
+    .secondaryButton {
+        max-width: none;
+        width: 100%;
+    }
+
+    .summaryContainer {
+        flex-direction: column;
+    }
+
+    .summaryCard {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 0.5rem;
+    }
+
+    .sectionTitle {
+        padding: 1rem 0.5rem 0.5rem 0.5rem;
+    }
+
+    .actionGroup,
+    .singleActionContainer {
+        padding: 0.5rem;
+    }
+
+    .summaryContainer {
+        padding: 0.5rem;
+    }
+}
