@@ -20,7 +20,7 @@ const Login = () => {
     // Redirect if already authenticated
     useEffect(() => {
         if (!loading && isAuthenticated()) {
-            router.push('/managers');
+            router.push('/dashboard');
         }
     }, [loading, isAuthenticated, router]);
 
@@ -76,8 +76,8 @@ const Login = () => {
             const result = await login(formData.username, formData.password);
 
             if (result.success) {
-                // Redirect to managers page
-                router.push('/managers');
+                // Redirect to dashboard page
+                router.push('/dashboard');
             } else {
                 setApiError(result.error || 'فشل تسجيل الدخول');
             }

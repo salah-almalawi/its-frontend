@@ -24,15 +24,15 @@ const AuthGuard = ({ children }) => {
             }
 
             if (isAuthenticated() && pathname === '/login') {
-                // Redirect to managers if authenticated and trying to access login
-                router.push('/managers');
+                // Redirect to dashboard if authenticated and trying to access login
+                router.push('/dashboard');
                 return;
             }
 
             // Handle root path redirect
             if (pathname === '/') {
                 if (isAuthenticated()) {
-                    router.push('/managers');
+                    router.push('/dashboard');
                 } else {
                     router.push('/login');
                 }
