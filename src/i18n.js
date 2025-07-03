@@ -109,7 +109,15 @@ i18n
           "Error loading manager: {{error}}": "خطأ في تحميل المدير: {{error}}",
           "Manager not found": "لم يتم العثور على المدير",
           "Loading manager details...": "جاري تحميل تفاصيل المدير...",
-          "Error: {{error}}": "خطأ: {{error}}"
+          "Error: {{error}}": "خطأ: {{error}}",
+          "Dashboard": "لوحة القيادة",
+          "Quick Actions": "إجراءات سريعة",
+          "Create Account": "إنشاء حساب",
+          "Create Manager": "إنشاء مدير",
+          "Create Inspection Round": "إنشاء جولة تفتيش",
+          "Summary": "ملخص",
+          "Total Managers": "إجمالي المدراء",
+          "Total Inspection Rounds": "إجمالي جولات التفتيش"
         },
       },
     },
