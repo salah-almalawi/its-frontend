@@ -248,13 +248,13 @@ const managerSlice = createSlice({
 
                 // Remove from managers list
                 state.managers = state.managers.filter(
-                    manager => manager._id !== action.payload && manager.id !== action.payload
+                    manager => String(manager._id) !== String(action.payload) && String(manager.id) !== String(action.payload)
                 );
 
                 // Clear current manager if it's the deleted one
                 if (state.currentManager &&
-                    (state.currentManager._id === action.payload ||
-                        state.currentManager.id === action.payload)) {
+                    (String(state.currentManager._id) === String(action.payload) ||
+                        String(state.currentManager.id) === String(action.payload))) {
                     state.currentManager = null;
                     state.allRounds = [];
                 }
