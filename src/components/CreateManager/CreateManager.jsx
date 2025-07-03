@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import MySwal from '@/utils/swal';
 import {
   createManager,
   selectCreateLoading,
@@ -87,6 +88,14 @@ const CreateManager = ({ onSuccess, onCancel }) => {
     try {
       const result = await dispatch(createManager(formData)).unwrap();
       
+      // Show success message
+      MySwal.fire({
+        icon: 'success',
+        title: 'تم الإنشاء بنجاح!',
+        text: `تم إنشاء المدير ${result.name} بنجاح. `,
+        confirmButtonText: 'موافق'
+      });
+
       // Reset form after successful submission
       setFormData({
         name: '',
@@ -101,9 +110,15 @@ const CreateManager = ({ onSuccess, onCancel }) => {
       } else {
         router.push('/managers');
       }
-    } catch (error) {
-      // Error is handled by Redux state
-      console.error('Error creating manager:', error);
+    } catch (err) {
+      // Error is handled by Redux state, but show a SweetAlert for user feedback
+      console.error('Error creating manager:', err);
+      MySwal.fire({
+        icon: 'error',
+        title: 'خطأ في الإنشاء!',
+        text: err.message || 'حدث خطأ أثناء إنشاء المدير.',
+        confirmButtonText: 'موافق'
+      });
     }
   };
 

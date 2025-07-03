@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import MySwal from '@/utils/swal';
 
 import styles from './ManagerDetails.module.css';
 
@@ -27,15 +28,32 @@ const ManagerDetails = ({
     onPrintReport
 }) => {
     const { t } = useTranslation();
+    
     const [isDeleting, setIsDeleting] = useState(false);
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-    const handlePrintReport = () => {
-        if (onPrintReport) {
-            onPrintReport(manager);
-        } else {
-            // Default print functionality
-            window.print();
+    const handlePrintReport = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/managers/${manager.id}/summary`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const blob = await response.blob();
+            const fileURL = URL.createObjectURL(blob);
+            window.open(fileURL, '_blank');
+            MySwal.fire({
+                icon: 'success',
+                title: t('تم إنشاء التقرير بنجاح!'),
+                text: t('تم فتح التقرير في علامة تبويب جديدة.'),
+                confirmButtonText: t('موافق')
+            });
+        } catch (error) {
+            console.error('Error generating report:', error);
+            MySwal.fire({
+                icon: 'error',
+                title: t('خطأ في إنشاء التقرير!'),
+                text: t('فشل إنشاء التقرير. الرجاء المحاولة مرة أخرى.'),
+                confirmButtonText: t('موافق')
+            });
         }
     };
 
@@ -46,26 +64,42 @@ const ManagerDetails = ({
     };
 
     const handleDeleteClick = () => {
-        setShowDeleteConfirm(true);
-    };
-
-    const handleDeleteConfirm = async () => {
-        setIsDeleting(true);
-        try {
-            if (onDelete) {
-                await onDelete(manager.id);
+        MySwal.fire({
+            title: t("Confirm Delete"),
+            text: t("Are you sure you want to delete {{managerName}}? This action cannot be undone.", { managerName: manager.name }),
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: t('Delete'),
+            cancelButtonText: t('Cancel')
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                setIsDeleting(true);
+                try {
+                    if (onDelete) {
+                        await onDelete(manager.id);
+                        MySwal.fire(
+                            t('تم الحذف!'),
+                            t('تم حذف المدير بنجاح.'),
+                            'success'
+                        );
+                    }
+                } catch (error) {
+                    console.error('Error deleting manager:', error);
+                    MySwal.fire(
+                        t('Error!'),
+                        t('Failed to delete manager.'),
+                        'error'
+                    );
+                } finally {
+                    setIsDeleting(false);
+                }
             }
-        } catch (error) {
-            console.error('Error deleting manager:', error);
-        } finally {
-            setIsDeleting(false);
-            setShowDeleteConfirm(false);
-        }
+        });
     };
 
-    const handleDeleteCancel = () => {
-        setShowDeleteConfirm(false);
-    };
+    
 
     return (
         <div className={styles.container}>
@@ -159,7 +193,7 @@ const ManagerDetails = ({
                                     onClick={handlePrintReport}
                                     className={styles.printButton}
                                 >
-                                    <span className={styles.buttonText}>{t("Print Report")}</span>
+                                    <span className={styles.buttonText}>{t("Create Report")}</span>
                                 </button>
                             </div>
 
@@ -186,36 +220,7 @@ const ManagerDetails = ({
                 </div>
             </div>
 
-            {/* Delete Confirmation Modal */}
-            {showDeleteConfirm && (
-                <div className={styles.modalOverlay}>
-                    <div className={styles.modal}>
-                        <div className={styles.modalHeader}>
-                            <h3 className={styles.modalTitle}>{t("Confirm Delete")}</h3>
-                        </div>
-                        <div className={styles.modalBody}>
-                            <p className={styles.modalText}>
-                                {t("Are you sure you want to delete {{managerName}}? This action cannot be undone.", { managerName: manager.name })}
-                            </p>
-                        </div>
-                        <div className={styles.modalActions}>
-                            <button
-                                onClick={handleDeleteCancel}
-                                className={styles.modalCancelButton}
-                            >
-                                {t("Cancel")}
-                            </button>
-                            <button
-                                onClick={handleDeleteConfirm}
-                                className={styles.modalDeleteButton}
-                                disabled={isDeleting}
-                            >
-                                {isDeleting ? t('Deleting...') : t('Delete')}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            
         </div>
     );
 };

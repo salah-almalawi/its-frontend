@@ -19,6 +19,7 @@ const ManagersTable = () => {
   
   // Redux state
   const managers = useAppSelector(selectManagers);
+  const uniqueManagers = Array.from(new Map(managers.map(manager => [manager._id || manager.id, manager])).values());
   const loading = useAppSelector(selectManagersLoading);
   const error = useAppSelector(selectManagersError);
 
@@ -119,7 +120,7 @@ const ManagersTable = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {managers.map((manager) => (
+                    {uniqueManagers.map((manager) => (
                       <tr 
                         key={manager._id || manager.id} 
                         className={styles.dataRow}
@@ -136,7 +137,7 @@ const ManagersTable = () => {
                         </td>
                       </tr>
                     ))}
-                    {managers.length === 0 && (
+                    {uniqueManagers.length === 0 && (
                       <tr className={styles.emptyRow}>
                         <td colSpan="4" className={styles.emptyCell}>
                           لا توجد مديرين.

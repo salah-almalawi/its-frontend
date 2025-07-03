@@ -1,4 +1,5 @@
 import axios from 'axios';
+import MySwal from '../utils/swal';
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000/api',
@@ -35,54 +36,65 @@ api.interceptors.response.use(
     (error) => {
         console.error('API Error:', error);
 
-        // التعامل مع أخطاء مختلفة
+        let errorMessage = 'حدث خطأ غير متوقع.';
+        let errorTitle = 'خطأ!';
+
         if (error.response) {
-            // الخادم رد بحالة خطأ
             const { status, data } = error.response;
+            errorMessage = data?.message || `خطأ في الخادم: ${status}`;
 
             switch (status) {
                 case 401:
-                    // غير مصرح له - إعادة توجيه للتسجيل
-                    console.error('Unauthorized access');
+                    errorTitle = 'غير مصرح به!';
+                    errorMessage = 'انتهت صلاحية جلستك أو ليس لديك إذن. الرجاء تسجيل الدخول مرة أخرى.';
                     if (typeof window !== 'undefined') {
                         localStorage.removeItem('authToken');
                         localStorage.removeItem('userInfo');
-                        // Only redirect if not already on login page
                         if (window.location.pathname !== '/login') {
                             window.location.href = '/login';
                         }
                     }
                     break;
                 case 403:
-                    // ممنوع
-                    console.error('Access forbidden');
+                    errorTitle = 'ممنوع!';
+                    errorMessage = 'ليس لديك إذن للوصول إلى هذا المورد.';
                     break;
                 case 404:
-                    // غير موجود
-                    console.error('Resource not found');
+                    errorTitle = 'غير موجود!';
+                    errorMessage = 'المورد المطلوب غير موجود.';
+                    break;
+                case 429:
+                    errorTitle = 'طلبات كثيرة جداً!';
+                    errorMessage = 'لقد أرسلت طلبات كثيرة جداً في فترة زمنية قصيرة. الرجاء المحاولة مرة أخرى لاحقاً.';
                     break;
                 case 500:
-                    // خطأ في الخادم
-                    console.error('Internal server error');
+                    errorTitle = 'خطأ في الخادم!';
+                    errorMessage = 'حدث خطأ داخلي في الخادم. الرجاء المحاولة مرة أخرى لاحقاً.';
+                    break;
+                case 503:
+                    errorTitle = 'الخدمة غير متاحة!';
+                    errorMessage = 'الخادم غير قادر حالياً على التعامل مع الطلب. الرجاء المحاولة مرة أخرى لاحقاً.';
                     break;
                 default:
-                    console.error(`HTTP Error ${status}:`, data?.message || 'Unknown error');
+                    errorTitle = `خطأ HTTP ${status}!`;
+                    errorMessage = data?.message || `حدث خطأ في الخادم بحالة ${status}.`;
             }
-
-            // إرجاع رسالة خطأ مفهومة
-            const errorMessage = data?.message || `HTTP Error ${status}`;
-            return Promise.reject(new Error(errorMessage));
-
         } else if (error.request) {
-            // الطلب تم إرساله لكن لا توجد استجابة
-            console.error('No response received:', error.request);
-            return Promise.reject(new Error('Network error - please check your connection'));
-
+            errorTitle = 'خطأ في الشبكة!';
+            errorMessage = 'تعذر الاتصال بالخادم. الرجاء التحقق من اتصالك بالإنترنت.';
         } else {
-            // شيء آخر حدث خطأ
-            console.error('Request setup error:', error.message);
-            return Promise.reject(error);
+            errorTitle = 'خطأ في الطلب!';
+            errorMessage = `حدث خطأ أثناء إعداد الطلب: ${error.message}`;
         }
+
+        MySwal.fire({
+            icon: 'error',
+            title: errorTitle,
+            text: errorMessage,
+            confirmButtonText: 'موافق'
+        });
+
+        return Promise.reject(new Error(errorMessage));
     }
 );
 

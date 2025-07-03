@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { clearError } from '@/store/slices/managerSlice';
+import MySwal from '@/utils/swal';
 import styles from './EditManager.module.css';
 
 const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, error = null }) => {
@@ -77,15 +78,56 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!validateForm()) {
       return;
     }
 
-    if (onSave) {
-      onSave(formData);
+    // Store original manager data to compare changes
+    const originalManagerData = {
+      name: manager?.name || '',
+      rank: manager?.rank?.toString() || '',
+      department: manager?.department || ''
+    };
+
+    try {
+      if (onSave) {
+        await onSave(formData);
+
+        // Determine which fields were updated
+        const updatedFields = [];
+        if (formData.name !== originalManagerData.name) {
+          updatedFields.push('الاسم');
+        }
+        if (formData.rank !== originalManagerData.rank) {
+          updatedFields.push('الرتبة');
+        }
+        if (formData.department !== originalManagerData.department) {
+          updatedFields.push('القسم');
+        }
+
+        let successMessage = 'تم تحديث بيانات المدير بنجاح.';
+        if (updatedFields.length > 0) {
+          successMessage = `تم تحديث ${updatedFields.join(' و ')} بنجاح.`;
+        }
+
+        MySwal.fire({
+          icon: 'success',
+          title: 'تم التحديث بنجاح!',
+          text: successMessage,
+          confirmButtonText: 'موافق'
+        });
+      }
+    } catch (err) {
+      console.error('Error updating manager:', err);
+      MySwal.fire({
+        icon: 'error',
+        title: 'خطأ في التحديث!',
+        text: err.message || 'حدث خطأ أثناء تحديث بيانات المدير.',
+        confirmButtonText: 'موافق'
+      });
     }
   };
 
