@@ -117,7 +117,11 @@ i18n
           "Create Inspection Round": "إنشاء جولة تفتيش",
           "Summary": "ملخص",
           "Total Managers": "إجمالي المدراء",
-          "Total Inspection Rounds": "إجمالي جولات التفتيش"
+          "Total Inspection Rounds": "إجمالي جولات التفتيش",
+          "Home": "الرئيسية",
+          "Tours": "الجولات",
+          "Register": "تسجيل",
+          "New": "جديد"
         },
       },
     },
