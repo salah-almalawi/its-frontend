@@ -107,13 +107,7 @@ const ManagerDetails = ({
                 <div className={styles.contentWrapper}>
                     <div className={styles.layoutContentContainer}>
                         {/* Breadcrumb */}
-                        <div className={styles.breadcrumb}>
-                            <Link href="/managers" className={styles.breadcrumbLink}>
-                                {t("Managers")}
-                            </Link>
-                            <span className={styles.breadcrumbSeparator}>/</span>
-                            <span className={styles.breadcrumbCurrent}>{t("Manager Details")}</span>
-                        </div>
+             
 
                         {/* Page Header */}
                         <div className={styles.headerContainer}>

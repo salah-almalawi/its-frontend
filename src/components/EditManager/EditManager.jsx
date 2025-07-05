@@ -144,14 +144,7 @@ const EditManager = ({ manager = null, onSave, onCancel, isSubmitting = false, e
       <div className={styles.layoutContainer}>
         <div className={styles.contentWrapper}>
           <div className={styles.layoutContentContainer}>
-            {/* Breadcrumb */}
-            <div className={styles.breadcrumb}>
-              <Link href="/managers" className={styles.breadcrumbLink}>
-                المديرين
-              </Link>
-              <span className={styles.breadcrumbSeparator}>/</span>
-              <span className={styles.breadcrumbCurrent}>تحديث مدير</span>
-            </div>
+
 
             {/* Page Title */}
             <div className={styles.titleContainer}>

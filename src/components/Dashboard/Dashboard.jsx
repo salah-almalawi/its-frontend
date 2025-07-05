@@ -36,18 +36,18 @@ const Dashboard = () => {
                                         <span className={styles.buttonText}>{t('Create Account')}</span>
                                     </button>
                                 </Link>
-                                <Link href="/managers/new" passHref>
+                                <Link href="/managers" passHref>
                                     <button className={styles.secondaryButton}>
-                                        <span className={styles.buttonText}>{t('Create Manager')}</span>
+                                        المدراء
                                     </button>
                                 </Link>
                             </div>
                         </div>
 
                         <div className={styles.singleActionContainer}>
-                            <Link href="/tours/new" passHref>
+                            <Link href="/tours" passHref>
                                 <button className={styles.primaryButton}>
-                                    <span className={styles.buttonText}>{t('Create Inspection Round')}</span>
+                                    الجولات
                                 </button>
                             </Link>
                         </div>
