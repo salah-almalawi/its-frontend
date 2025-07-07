@@ -28,33 +28,82 @@ const ManagerDetails = ({
     onPrintReport
 }) => {
     const { t } = useTranslation();
-    
+
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handlePrintReport = async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/api/managers/${manager.id}/summary`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+        MySwal.fire({
+            title: t('Create Report'),
+            html: `
+                <input id="day" class="swal2-input" placeholder="${t('Day')}">
+                <input id="year" class="swal2-input" placeholder="${t('Hijri Year')}">
+                <input id="month" class="swal2-input" placeholder="${t('Hijri Month')}">
+                <input id="date_day" class="swal2-input" placeholder="${t('Hijri Day')}">
+            `,
+            confirmButtonText: t('Generate'),
+            showCancelButton: true,
+            cancelButtonText: t('Cancel'),
+            preConfirm: () => {
+                const day = document.getElementById('day').value;
+                const year = document.getElementById('year').value;
+                const month = document.getElementById('month').value;
+                const date_day = document.getElementById('date_day').value;
+                if (!day || !year || !month || !date_day) {
+                    MySwal.showValidationMessage(t('Please fill all fields'));
+                    return false;
+                }
+                return { day, date: { year, month, day: date_day } };
             }
-            const blob = await response.blob();
-            const fileURL = URL.createObjectURL(blob);
-            window.open(fileURL, '_blank');
-            MySwal.fire({
-                icon: 'success',
-                title: t('تم إنشاء التقرير بنجاح!'),
-                text: t('تم فتح التقرير في علامة تبويب جديدة.'),
-                confirmButtonText: t('موافق')
-            });
-        } catch (error) {
-            console.error('Error generating report:', error);
-            MySwal.fire({
-                icon: 'error',
-                title: t('خطأ في إنشاء التقرير!'),
-                text: t('فشل إنشاء التقرير. الرجاء المحاولة مرة أخرى.'),
-                confirmButtonText: t('موافق')
-            });
-        }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const { day, date } = result.value;
+                try {
+                    const response = await fetch(`http://localhost:3000/api/managers/${manager.id}/generate-report`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ day, date }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const blob = await response.blob();
+                    const fileURL = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = fileURL;
+                    const contentDisposition = response.headers.get('content-disposition');
+                    let filename = 'output.docx';
+                    if (contentDisposition) {
+                        const filenameMatch = contentDisposition.match(/filename="?(.+)"?/);
+                        if (filenameMatch.length > 1) {
+                            filename = filenameMatch[1];
+                        }
+                    }
+                    link.setAttribute('download', filename);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+
+                    MySwal.fire({
+                        icon: 'success',
+                        title: t('تم إنشاء التقرير بنجاح!'),
+                        text: t('تم تنزيل التقرير.'),
+                        confirmButtonText: t('موافق')
+                    });
+                } catch (error) {
+                    console.error('Error generating report:', error);
+                    MySwal.fire({
+                        icon: 'error',
+                        title: t('خطأ في إنشاء التقرير!'),
+                        text: t('فشل إنشاء التقرير. الرجاء المحاولة مرة أخرى.'),
+                        confirmButtonText: t('موافق')
+                    });
+                }
+            }
+        });
     };
 
     const handleUpdate = () => {
@@ -99,7 +148,7 @@ const ManagerDetails = ({
         });
     };
 
-    
+
 
     return (
         <div className={styles.container}>
@@ -107,7 +156,7 @@ const ManagerDetails = ({
                 <div className={styles.contentWrapper}>
                     <div className={styles.layoutContentContainer}>
                         {/* Breadcrumb */}
-             
+
 
                         {/* Page Header */}
                         <div className={styles.headerContainer}>
@@ -214,7 +263,7 @@ const ManagerDetails = ({
                 </div>
             </div>
 
-            
+
         </div>
     );
 };
